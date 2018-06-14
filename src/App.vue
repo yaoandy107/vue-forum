@@ -100,11 +100,8 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-          <!-- Main -->
-        </v-layout>
-      </v-container>
+      <router-view>
+      </router-view>
     </v-content>
     <v-btn
       fab
