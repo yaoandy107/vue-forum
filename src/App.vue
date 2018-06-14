@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <!-- 抽屜 -->
     <v-navigation-drawer
       clipped
       v-model="drawer"
@@ -65,6 +66,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
+    <!-- 導航欄 -->
     <v-toolbar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       color="blue darken-3"
@@ -72,10 +74,13 @@
       app
       fixed
     >
+      <!-- 標題區 -->
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <!-- Title -->
         <span class="hidden-sm-and-down">{{title}}</span>
       </v-toolbar-title>
+      <!-- 搜尋欄 -->
       <v-text-field
         flat
         solo-inverted
@@ -90,6 +95,9 @@
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
+      <v-btn outline v-on:click="login">
+        <span>{{logStatus}}</span>
+      </v-btn>
       <v-btn icon large>
         <v-avatar size="32px" tile>
           <img
@@ -99,10 +107,12 @@
         </v-avatar>
       </v-btn>
     </v-toolbar>
+    <!-- 內容主體 -->
     <v-content>
       <router-view>
       </router-view>
     </v-content>
+    <!-- Floating Action Bar -->
     <v-btn
       fab
       bottom
@@ -120,8 +130,20 @@
 
 <script>
 export default {
+  methods: {
+    login: function() {
+      const vm = this
+      vm.logStatus
+      if (vm.logStatus == '登入') {
+        vm.logStatus = '登出'
+      } else {
+        vm.logStatus = '登入'
+      }
+    }
+  },
   data: () => ({
     title: '論壇',
+    logStatus: '登入',
     dialog: false,
     drawer: null,
     items: [
