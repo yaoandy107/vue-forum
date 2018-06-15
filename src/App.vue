@@ -157,7 +157,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" flat="flat" @click.native="logoutDialog = false">返回</v-btn>
-          <v-btn color="green darken-1" flat="flat" @click.native="logoutDialog = false">確定</v-btn>
+          <v-btn color="green darken-1" flat="flat" v-on:click="logout">確定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -186,6 +186,7 @@ export default {
     logout: function () {
       const vm = this
       vm.logStatus = '登入'
+      vm.logoutDialog = false
     },
     onCaptchaVerified: function (recaptchaToken) {
       const self = this
