@@ -1,13 +1,13 @@
 <template>
   <v-app id="inspire">
-    <!-- 抽屜 -->
+    <!-- 側邊欄 -->
     <v-navigation-drawer
       clipped
       v-model="showDrawer"
       fixed
       app>
       <v-list dense>
-        <template v-for="item in items">
+        <template v-for="item in drawerItems">
           <v-layout
             v-if="item.heading"
             :key="item.heading"
@@ -74,8 +74,9 @@
       fixed>
       <!-- 標題區 -->
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+        <!-- 側邊欄 icon -->
         <v-toolbar-side-icon @click.stop="showDrawer = !showDrawer"></v-toolbar-side-icon>
-        <!-- Title -->
+        <!-- 標題 -->
         <span class="hidden-sm-and-down">{{title}}</span>
       </v-toolbar-title>
       <!-- 搜尋欄 -->
@@ -217,16 +218,16 @@ export default {
     logoutDialog: false,
     showDrawer: null,
     recaptcha: true,
-    items: [
-      { icon: 'contacts', text: '好友' },
-      { icon: 'history', text: '對話紀錄' },
+    drawerItems: [
       {
         icon: 'keyboard_arrow_up',
         'icon-alt': 'keyboard_arrow_down',
         text: '論壇版',
-        model: false,
+        model: true,
         children: [{ text: '學術' }, { text: '八卦' }, { text: '西施' }]
       },
+      { icon: 'contacts', text: '好友' },
+      { icon: 'history', text: '對話紀錄' },
       { icon: 'settings', text: '設定' },
       { icon: 'chat_bubble', text: '回饋' },
       { icon: 'help', text: '幫助' }
@@ -252,5 +253,8 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+}
+.list {
+  padding: 0;
 }
 </style>
