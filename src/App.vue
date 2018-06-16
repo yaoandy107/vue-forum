@@ -95,9 +95,13 @@
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
-      <!-- 登入按鈕 -->
-      <v-btn outline v-on:click="tranferLoginState">
-        <span>{{logStatus}}</span>
+      <!-- 註冊按鈕 -->
+      <v-btn outline v-if="!loginObjects.isLoggedIn" v-on:click="onLoginLogoutClicked">
+        <span>註冊</span>
+      </v-btn>
+      <!-- 登入/登出按鈕 -->
+      <v-btn outline v-on:click="onLoginLogoutClicked">
+        <span>{{ loginObjects.isLoggedIn ? '登出' : '登入' }}</span>
       </v-btn>  
       <v-btn icon large>
         <v-avatar size="32px" tile>
@@ -115,7 +119,7 @@
     </v-content>
     <!-- Dialog -->
     <!-- 登入對話方塊 -->
-    <v-dialog v-model="loginDialog" max-width="400">
+    <v-dialog v-model="loginObjects.showLoginDialog" max-width="400">
       <v-card>
         <!-- 標題 -->
         <v-card-title class="text-center headline blue white--text">登入</v-card-title>
@@ -124,10 +128,10 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field label="帳號" :error='!isAccountValid' v-model='account.username'></v-text-field>
+                <v-text-field label="帳號" :error='!loginObjects.isAccountValid' v-model='loginObjects.username'></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field label="密碼" :error='!isAccountValid' type="password" v-model='account.password'></v-text-field>
+                <v-text-field label="密碼" :error='!loginObjects.isAccountValid' type="password" v-model='loginObjects.password'></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -144,20 +148,20 @@
         <!-- 登入按鈕 -->
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :disabled="!recaptcha" color="green darken-1" flat v-on:click="login">登入</v-btn>
+          <v-btn :disabled="!loginObjects.recaptcha" color="green darken-1" flat v-on:click="login">登入</v-btn>
         </v-card-actions>
       </v-card>
       <!-- 進度圈 -->
-      <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+      <v-progress-circular v-show="loginObjects.showProgress" indeterminate color="green"></v-progress-circular>
     </v-dialog>
     <!-- 登出確認對話方塊 -->
-    <v-dialog v-model="logoutDialog" max-width="290">
+    <v-dialog v-model="loginObjects.showLogoutDialog" max-width="290">
       <v-card>
         <v-card-title class="headline blue white--text">登出確認</v-card-title>
         <v-card-text>你確定要登出嗎？</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat="flat" @click.native="logoutDialog = false">返回</v-btn>
+          <v-btn color="green darken-1" flat="flat" @click.native="loginObjects.showLogoutDialog = false">返回</v-btn>
           <v-btn color="green darken-1" flat="flat" v-on:click="logout">確定</v-btn>
         </v-card-actions>
       </v-card>
@@ -173,51 +177,54 @@ export default {
   methods: {
     login: async function () {
       const vm = this
-      vm.showProgress = true
+      vm.loginObjects.showProgress = true
       let firebaseHelper = new FirebaseHelper()
-      let userId = await firebaseHelper.login(vm.account.username, vm.account.password)
-      vm.showProgress = false
+      let userId = await firebaseHelper.login(vm.loginObjects.username, vm.loginObjects.password)
+      vm.loginObjects.showProgress = false
       if (userId) {
-        vm.logStatus = '登出'
-        vm.loginDialog = false
+        vm.loginObjects.showLoginDialog = false
+        vm.loginObjects.isLoggedIn = true
       } else {
-        vm.isAccountValid = false
+        vm.loginObjects.isAccountValid = false
       }
     },
     logout: function () {
       const vm = this
-      vm.logStatus = '登入'
-      vm.logoutDialog = false
+      vm.loginObjects.showLogoutDialog = false
+      vm.loginObjects.isLoggedIn = false
+      vm.loginObjects.username = undefined
+      vm.loginObjects.password = undefined
     },
     onCaptchaVerified: function (recaptchaToken) {
-      const self = this
-      self.recaptcha = true
+      const vm = this
+      vm.loginObjects.recaptcha = true
     },
     onCaptchaExpired: function () {
       this.$refs.recaptcha.reset()
     },
-    tranferLoginState: function () {
+    onLoginLogoutClicked: function () {
       const vm = this
-      if (vm.logStatus === '登入') {
-        vm.loginDialog = true
+      if (!vm.loginObjects.isLoggedIn) {
+        vm.loginObjects.showLoginDialog = true
       } else {
-        vm.logoutDialog = true
+        vm.loginObjects.showLogoutDialog = true
       }
     }
   },
   data: () => ({
     title: 'DevZone',
-    logStatus: '登入',
-    account: {
-      username: null,
-      password: null
+    loginObjects: {
+      username: undefined,
+      password: undefined,
+      isLoggedIn: false,
+      showProgress: false,
+      isAccountValid: true,
+      showLoginDialog: false,
+      showLogoutDialog: false,
+      recaptcha: true
     },
-    showProgress: false,
-    isAccountValid: true,
-    loginDialog: false,
-    logoutDialog: false,
+    registerObjects: {},
     showDrawer: null,
-    recaptcha: true,
     drawerItems: [
       {
         icon: 'keyboard_arrow_up',

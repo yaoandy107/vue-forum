@@ -2,7 +2,7 @@ import firebase from 'firebase'
 
 class FirebaseHelper {
   constructor () {
-    this.config = {
+    const config = {
       apiKey: 'AIzaSyAGG7_qNlsnDTRePGGsB8Q3Cbit27AkDwQ',
       authDomain: 'devzone-27674.firebaseapp.com',
       databaseURL: 'https://devzone-27674.firebaseio.com',
@@ -10,10 +10,12 @@ class FirebaseHelper {
       storageBucket: '',
       messagingSenderId: '1024656756798'
     }
+    const settings = {timestampsInSnapshots: true}
     if (!firebase.apps.length) {
-      firebase.initializeApp(this.config)
+      firebase.initializeApp(config)
     }
     this.db = firebase.firestore()
+    this.db.settings(settings)
   }
   login (username, password) {
     console.log(username, password)
