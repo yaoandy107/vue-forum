@@ -96,12 +96,12 @@
         <v-icon>notifications</v-icon>
       </v-btn>
       <!-- 註冊按鈕 -->
-      <v-btn outline v-if="!loginObjects.isLoggedIn" v-on:click="onLoginLogoutClicked">
+      <v-btn outline v-if="!isLoggedIn" v-on:click="onLoginLogoutClicked">
         <span>註冊</span>
       </v-btn>
       <!-- 登入/登出按鈕 -->
       <v-btn outline v-on:click="onLoginLogoutClicked">
-        <span>{{ loginObjects.isLoggedIn ? '登出' : '登入' }}</span>
+        <span>{{ isLoggedIn ? '登出' : '登入' }}</span>
       </v-btn>  
       <v-btn icon large>
         <v-avatar size="32px" tile>
@@ -119,112 +119,34 @@
     </v-content>
     <!-- Dialog -->
     <!-- 登入對話方塊 -->
-    <v-dialog v-model="loginObjects.showLoginDialog" max-width="400">
-      <v-card>
-        <!-- 標題 -->
-        <v-card-title class="text-center headline blue white--text">登入</v-card-title>
-        <!-- 帳號 ＆ 密碼輸入框 -->
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-text-field label="帳號" :error='!loginObjects.isAccountValid' v-model='loginObjects.username'></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field label="密碼" :error='!loginObjects.isAccountValid' type="password" v-model='loginObjects.password'></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <!-- Recaptcha -->
-        <v-container align-content-center="true">
-          <vue-recaptcha 
-            class="recaptcha" 
-            @verify="onCaptchaVerified"
-            @expired="onCaptchaExpired" 
-            sitekey="6LebGl8UAAAAAMdUD8LvxbQ6rBhYaNpYjdiTe79x">
-          </vue-recaptcha>
-        </v-container>
-        <!-- 登入按鈕 -->
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn :disabled="!loginObjects.recaptcha" color="green darken-1" flat v-on:click="login">登入</v-btn>
-        </v-card-actions>
-      </v-card>
-      <!-- 進度圈 -->
-      <v-progress-circular v-show="loginObjects.showProgress" indeterminate color="green"></v-progress-circular>
-    </v-dialog>
+    <login-dialog :show="showLoginDialog" v-on:logged-in="isLoggedIn = true">
+    </login-dialog>
     <!-- 登出確認對話方塊 -->
-    <v-dialog v-model="loginObjects.showLogoutDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline blue white--text">登出確認</v-card-title>
-        <v-card-text>你確定要登出嗎？</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat="flat" @click.native="loginObjects.showLogoutDialog = false">返回</v-btn>
-          <v-btn color="green darken-1" flat="flat" v-on:click="logout">確定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <logout-dialog :show="showLogoutDialog" v-on:logged-out="isLoggedIn = false">
+    </logout-dialog>
   </v-app>
 </template>
 
 <script>
-import VueRecaptcha from 'vue-recaptcha'
-import FirebaseHelper from './helpers/FirebaseHelper'
+import LoginDialog from './components/LoginDialog'
+import LogoutDialog from './components/LogoutDialog'
 
 export default {
   methods: {
-    login: async function () {
-      const vm = this
-      vm.loginObjects.showProgress = true
-      let firebaseHelper = new FirebaseHelper()
-      let userId = await firebaseHelper.login(vm.loginObjects.username, vm.loginObjects.password)
-      vm.loginObjects.showProgress = false
-      if (userId) {
-        vm.loginObjects.showLoginDialog = false
-        vm.loginObjects.isLoggedIn = true
-      } else {
-        vm.loginObjects.isAccountValid = false
-      }
-    },
-    logout: function () {
-      const vm = this
-      vm.loginObjects.showLogoutDialog = false
-      vm.loginObjects.isLoggedIn = false
-      vm.loginObjects.username = undefined
-      vm.loginObjects.password = undefined
-      window.grecaptcha.reset()
-    },
-    onCaptchaVerified: function (recaptchaToken) {
-      const vm = this
-      vm.loginObjects.recaptcha = true
-    },
-    onCaptchaExpired: function () {
-      window.grecaptcha.reset()
-    },
     onLoginLogoutClicked: function () {
       const vm = this
-      if (!vm.loginObjects.isLoggedIn) {
-        vm.loginObjects.showLoginDialog = true
+      if (!vm.isLoggedIn) {
+        vm.showLoginDialog.bool = true
       } else {
-        vm.loginObjects.showLogoutDialog = true
+        vm.showLogoutDialog.bool = true
       }
     }
   },
   data: () => ({
     title: 'DevZone',
-    loginObjects: {
-      username: undefined,
-      password: undefined,
-      isLoggedIn: false,
-      showProgress: false,
-      isAccountValid: true,
-      showLoginDialog: false,
-      showLogoutDialog: false,
-      recaptcha: true
-    },
-    registerObjects: {},
+    isLoggedIn: false,
+    showLoginDialog: { bool: false },
+    showLogoutDialog: { bool: false },
     showDrawer: null,
     drawerItems: [
       {
@@ -243,7 +165,8 @@ export default {
     ]
   }),
   components: {
-    VueRecaptcha
+    LoginDialog,
+    LogoutDialog
   },
   props: {
     source: String
