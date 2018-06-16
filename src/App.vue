@@ -194,13 +194,14 @@ export default {
       vm.loginObjects.isLoggedIn = false
       vm.loginObjects.username = undefined
       vm.loginObjects.password = undefined
+      window.grecaptcha.reset()
     },
     onCaptchaVerified: function (recaptchaToken) {
       const vm = this
       vm.loginObjects.recaptcha = true
     },
     onCaptchaExpired: function () {
-      this.$refs.recaptcha.reset()
+      window.grecaptcha.reset()
     },
     onLoginLogoutClicked: function () {
       const vm = this
