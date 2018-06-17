@@ -122,9 +122,9 @@
     <!-- 註冊對話方塊 -->
     <register-dialog :show="showRegisterDialog" :toggle="showRegisterDialog.bool"></register-dialog>
     <!-- 登入對話方塊 -->
-    <login-dialog :show="showLoginDialog" v-on:logged-in="isLoggedIn = true"></login-dialog>
+    <login-dialog :show="showLoginDialog" :toggle="showLoginDialog.bool" v-on:logged-in="onLoggedIn"></login-dialog>
     <!-- 登出確認對話方塊 -->
-    <logout-dialog :show="showLogoutDialog" v-on:logged-out="isLoggedIn = false"></logout-dialog>
+    <logout-dialog :show="showLogoutDialog" :toggle="showLoginDialog.bool" :userid="userId" v-on:logged-out="onLoggedOut"></logout-dialog>
   </v-app>
 </template>
 
@@ -132,10 +132,19 @@
 import LoginDialog from './components/LoginDialog'
 import LogoutDialog from './components/LogoutDialog'
 import RegisterDialog from './components/RegisterDialog'
-// import FirebaseHelper from './helpers/FirebaseHelper'
 
 export default {
   methods: {
+    onLoggedIn: function (userId) {
+      const vm = this
+      vm.isLoggedIn = true
+      vm.userId = userId
+    },
+    onLoggedOut: function () {
+      const vm = this
+      vm.isLoggedIn = false
+      vm.userId = undefined
+    },
     onLoginLogoutClicked: function () {
       const vm = this
       if (!vm.isLoggedIn) {
@@ -145,7 +154,6 @@ export default {
       }
     },
     onRegisterClicked: function () {
-      // FirebaseHelper.register('ch870814@gmail.com', 'DevilTea', 'c0h8e1n4')
       const vm = this
       vm.showRegisterDialog.bool = true
     }
@@ -153,6 +161,7 @@ export default {
   data: () => ({
     title: 'DevZone',
     isLoggedIn: false,
+    userId: undefined,
     showLoginDialog: { bool: false },
     showLogoutDialog: { bool: false },
     showRegisterDialog: { bool: false },

@@ -20,23 +20,41 @@ class FirebaseHelper {
   isRegisteredEmail (email = '') {
     const accountsRef = this.db.collection('accounts')
     return accountsRef.where('email', '==', email).get()
-      .then((querySnapshot) => {
-        return querySnapshot.docs.length > 0 && email.length > 0
-      })
+    .then((querySnapshot) => {
+      return querySnapshot.docs.length > 0 && email.length > 0
+    })
   }
   login (email, password) {
     const accountsRef = this.db.collection('accounts')
     return accountsRef.where('email', '==', email).where('password', '==', password).limit(1).get()
-      .then((querySnapshot) => {
-        let userId
-        querySnapshot.forEach((doc) => {
-          userId = doc.id
-        })
-        return userId
+    .then((querySnapshot) => {
+      let userId
+      querySnapshot.forEach((doc) => {
+        userId = doc.id
+        accountsRef.doc(userId).set({
+          login_time: new Date(),
+          logged_in: true
+        }, { merge: true })
       })
-      .catch((exception) => {
-        console.log('登入錯誤')
-      })
+      return userId
+    })
+    .catch((exception) => {
+      console.log('登入錯誤')
+    })
+  }
+  logout (userId) {
+    const accountsRef = this.db.collection('accounts')
+    return accountsRef.doc(userId).set({
+      logout_time: new Date(),
+      logged_in: false
+    }, { merge: true })
+    .then(() => {
+      return true
+    })
+    .catch((exception) => {
+      console.log('登出錯誤')
+      return false
+    })
   }
   register (email, username, password) {
     const accountsRef = this.db.collection('accounts')
@@ -45,8 +63,9 @@ class FirebaseHelper {
       username: username,
       password: password,
       created_time: new Date(),
-      login_time: new Date(),
-      logout_time: new Date()
+      login_time: null,
+      logout_time: null,
+      logged_in: false
     })
     .then(() => {
       return true

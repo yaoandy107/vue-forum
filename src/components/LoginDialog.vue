@@ -11,7 +11,8 @@
             <v-flex xs12>
               <v-text-field 
                 label="信箱" 
-                :error='!isAccountValid' 
+                :error="emailCheck.isError"
+                :hint="emailCheck.hint"
                 :autofocus="true" 
                 v-model='inputEmail'
               ></v-text-field>
@@ -20,8 +21,11 @@
             <v-flex xs12>
               <v-text-field 
                 label="密碼" 
-                :error='!isAccountValid' 
-                type="password" 
+                :append-icon="hide ? 'visibility' : 'visibility_off'"
+                :append-icon-cb="() => (hide = !hide)"
+                :type="hide ? 'password' : 'text'" 
+                :error="passwordCheck.isError"
+                :hint="passwordCheck.hint"
                 v-model='inputPassword'
               ></v-text-field>
             </v-flex>
@@ -30,7 +34,8 @@
       </v-card-text>
       <!-- Recaptcha -->
       <v-container align-content-center="true">
-        <vue-recaptcha 
+        <vue-recaptcha
+          ref="recaptcha"
           class="recaptcha" 
           @verify="onCaptchaVerified"
           @expired="onCaptchaExpired" 
@@ -40,7 +45,7 @@
       <!-- 登入按鈕 -->
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn :disabled="!isPassedRecaptcha" color="green darken-1" flat v-on:click="login">登入</v-btn>
+        <v-btn :disabled="!hasPassedRecaptcha" color="green darken-1" flat v-on:click="login">登入</v-btn>
       </v-card-actions>
     </v-card>
     <!-- 進度圈 -->
@@ -54,28 +59,103 @@ import FirebaseHelper from '../helpers/FirebaseHelper'
 
 export default {
   props: {
-    show: Object
+    show: Object,
+    toggle: Boolean
   },
   components: {
     VueRecaptcha
+  },
+  watch: {
+    toggle (bool) {
+      const vm = this
+      vm.reset()
+    },
+    inputEmail (email) {
+      const vm = this
+      vm.checkEmail(email)
+    },
+    inputPassword (password) {
+      const vm = this
+      vm.checkPassword(password)
+    }
   },
   data: () => {
     return {
       inputEmail: undefined,
       inputPassword: undefined,
       showProgress: false,
-      isAccountValid: true,
-      isPassedRecaptcha: false,
-      rules: {
-        required: (value) => !!value || '必填',
-        email: (value) => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || '不正確的信箱格式'
-        }
-      }
+      hide: true,
+      emailCheck: {
+        hasChecked: false,
+        isError: false,
+        hint: ''
+      },
+      passwordCheck: {
+        hasChecked: false,
+        isError: false,
+        hint: ''
+      },
+      hasPassedRecaptcha: false
     }
   },
   methods: {
+    reset: function () {
+      const vm = this
+      vm.inputEmail = undefined
+      vm.inputPassword = undefined
+      vm.$refs.recaptcha.reset()
+      vm.hasPassedRecaptcha = false
+      vm.emailCheck.hasChecked = false
+      vm.emailCheck.isError = false
+      vm.emailCheck.hint = ''
+      vm.passwordCheck.hasChecked = false
+      vm.passwordCheck.isError = false
+      vm.passwordCheck.hint = ''
+    },
+    checkEmail: function (email) {
+      let vm = this
+      vm.emailCheck.hasChecked = true
+      if (email) {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        if (pattern.test(email)) {
+          let func = async (email) => {
+            FirebaseHelper.isRegisteredEmail(email)
+            .then((bool) => {
+              if (!bool) {
+                vm.emailCheck.isError = true
+                vm.emailCheck.hint = '不存在的信箱'
+              } else {
+                vm.emailCheck.isError = false
+                vm.emailCheck.hint = ''
+              }
+            })
+          }
+          func(email)
+        } else {
+          vm.emailCheck.isError = true
+          vm.emailCheck.hint = '不正確的信箱格式'
+        }
+      } else {
+        vm.emailCheck.isError = true
+        vm.emailCheck.hint = '必填欄位'
+      }
+    },
+    checkPassword: function (password) {
+      const vm = this
+      vm.passwordCheck.hasChecked = true
+      if (password) {
+        if (password.length >= 8) {
+          vm.passwordCheck.isError = false
+          vm.passwordCheck.hint = ''
+        } else {
+          vm.passwordCheck.isError = true
+          vm.passwordCheck.hint = '長度需大於等於 8'
+        }
+      } else {
+        vm.passwordCheck.isError = true
+        vm.passwordCheck.hint = '必填欄位'
+      }
+    },
     login: async function () {
       const vm = this
       vm.showProgress = true
@@ -83,22 +163,23 @@ export default {
       .then((userId) => {
         vm.showProgress = false
         if (userId) {
+          vm.showProgress = false
+          vm.$emit('logged-in', userId)
           vm.show.bool = false
-          vm.inputEmail = undefined
-          vm.inputPassword = undefined
-          window.grecaptcha.reset()
-          vm.$emit('logged-in')
         } else {
-          vm.isAccountValid = false
+          vm.passwordCheck.isError = true
+          vm.passwordCheck.hint = '密碼錯誤'
         }
       })
     },
     onCaptchaVerified: function (recaptchaToken) {
       const vm = this
-      vm.isPassedRecaptcha = true
+      vm.hasPassedRecaptcha = true
     },
     onCaptchaExpired: function () {
-      window.grecaptcha.reset()
+      const vm = this
+      vm.$refs.recaptcha.reset()
+      vm.hasPassedRecaptcha = false
     }
   }
 }

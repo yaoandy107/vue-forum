@@ -41,6 +41,7 @@
       <!-- Recaptcha -->
       <v-container align-content-center="true">
         <vue-recaptcha 
+          ref="recaptcha"
           class="recaptcha" 
           @verify="onCaptchaVerified"
           @expired="onCaptchaExpired" 
@@ -115,15 +116,12 @@ export default {
     }
   },
   methods: {
-    test: function () {
-      console.log('waa')
-    },
     reset: function () {
       const vm = this
       vm.inputEmail = undefined
       vm.inputUsername = undefined
       vm.inputPassword = undefined
-      window.grecaptcha.reset()
+      vm.$refs.recaptcha.reset()
       vm.hasPassedRecaptcha = false
       vm.emailCheck.hasChecked = false
       vm.emailCheck.isError = false
@@ -213,7 +211,7 @@ export default {
     },
     onCaptchaExpired: function () {
       const vm = this
-      window.grecaptcha.reset()
+      vm.$refs.recaptcha.reset()
       vm.hasPassedRecaptcha = false
     }
   }

@@ -13,9 +13,12 @@
 </template>
 
 <script>
+import FirebaseHelper from '../helpers/FirebaseHelper'
+
 export default {
   props: {
-    show: Object
+    show: Object,
+    userid: String
   },
   data: () => {
     return {
@@ -24,8 +27,13 @@ export default {
   methods: {
     logout: async function () {
       const vm = this
-      vm.show.bool = false
-      vm.$emit('logged-out')
+      FirebaseHelper.logout(vm.userid)
+      .then((success) => {
+        if (success) {
+          vm.show.bool = false
+          vm.$emit('logged-out')
+        }
+      })
     }
   }
 }
