@@ -6,6 +6,7 @@ import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
+// 自定義主題顏色
 // Vue.use(Vuetify, { theme: {
 //   primary: '#ee44aa',
 //   secondary: '#424242',
