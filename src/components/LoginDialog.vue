@@ -7,6 +7,7 @@
       <v-card-text>
         <v-container grid-list-md>
           <v-layout wrap>
+            <!-- 帳號輸入 -->
             <v-flex xs12>
               <v-text-field 
                 label="信箱" 
@@ -15,6 +16,7 @@
                 v-model='inputEmail'
               ></v-text-field>
             </v-flex>
+            <!-- 密碼輸入 -->
             <v-flex xs12>
               <v-text-field 
                 label="密碼" 

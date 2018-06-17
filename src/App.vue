@@ -103,6 +103,7 @@
       <v-btn outline v-on:click="onLoginLogoutClicked">
         <span>{{ isLoggedIn ? '登出' : '登入' }}</span>
       </v-btn>  
+      <!-- Logo -->
       <v-btn icon large>
         <v-avatar size="32px" tile>
           <img
