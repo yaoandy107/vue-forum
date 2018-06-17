@@ -8,10 +8,20 @@
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex xs12>
-              <v-text-field label="帳號" :error='!isAccountValid' v-model='inputUsername'></v-text-field>
+              <v-text-field 
+                label="信箱" 
+                :error='!isAccountValid' 
+                :autofocus="true" 
+                v-model='inputEmail'
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="密碼" :error='!isAccountValid' type="password" v-model='inputPassword'></v-text-field>
+              <v-text-field 
+                label="密碼" 
+                :error='!isAccountValid' 
+                type="password" 
+                v-model='inputPassword'
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
@@ -22,8 +32,8 @@
           class="recaptcha" 
           @verify="onCaptchaVerified"
           @expired="onCaptchaExpired" 
-          sitekey="6LebGl8UAAAAAMdUD8LvxbQ6rBhYaNpYjdiTe79x">
-        </vue-recaptcha>
+          sitekey="6LebGl8UAAAAAMdUD8LvxbQ6rBhYaNpYjdiTe79x"
+        ></vue-recaptcha>
       </v-container>
       <!-- 登入按鈕 -->
       <v-card-actions>
@@ -49,29 +59,37 @@ export default {
   },
   data: () => {
     return {
-      inputUsername: undefined,
+      inputEmail: undefined,
       inputPassword: undefined,
       showProgress: false,
       isAccountValid: true,
-      isPassedRecaptcha: false
+      isPassedRecaptcha: false,
+      rules: {
+        required: (value) => !!value || '必填',
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || '不正確的信箱格式'
+        }
+      }
     }
   },
   methods: {
     login: async function () {
       const vm = this
       vm.showProgress = true
-      let firebaseHelper = new FirebaseHelper()
-      let userId = await firebaseHelper.login(vm.inputUsername, vm.inputPassword)
-      vm.showProgress = false
-      if (userId) {
-        vm.show.bool = false
-        vm.inputUsername = undefined
-        vm.inputPassword = undefined
-        window.grecaptcha.reset()
-        vm.$emit('logged-in')
-      } else {
-        vm.isAccountValid = false
-      }
+      FirebaseHelper.login(vm.inputEmail, vm.inputPassword)
+      .then((userId) => {
+        vm.showProgress = false
+        if (userId) {
+          vm.show.bool = false
+          vm.inputEmail = undefined
+          vm.inputPassword = undefined
+          window.grecaptcha.reset()
+          vm.$emit('logged-in')
+        } else {
+          vm.isAccountValid = false
+        }
+      })
     },
     onCaptchaVerified: function (recaptchaToken) {
       const vm = this

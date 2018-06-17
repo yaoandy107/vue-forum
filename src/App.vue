@@ -96,7 +96,7 @@
         <v-icon>notifications</v-icon>
       </v-btn>
       <!-- 註冊按鈕 -->
-      <v-btn outline v-if="!isLoggedIn" v-on:click="onLoginLogoutClicked">
+      <v-btn outline v-if="!isLoggedIn" v-on:click="onRegisterClicked">
         <span>註冊</span>
       </v-btn>
       <!-- 登入/登出按鈕 -->
@@ -118,18 +118,20 @@
       </router-view>
     </v-content>
     <!-- Dialog -->
+    <!-- 註冊對話方塊 -->
+    <register-dialog :show="showRegisterDialog" :toggle="showRegisterDialog.bool"></register-dialog>
     <!-- 登入對話方塊 -->
-    <login-dialog :show="showLoginDialog" v-on:logged-in="isLoggedIn = true">
-    </login-dialog>
+    <login-dialog :show="showLoginDialog" v-on:logged-in="isLoggedIn = true"></login-dialog>
     <!-- 登出確認對話方塊 -->
-    <logout-dialog :show="showLogoutDialog" v-on:logged-out="isLoggedIn = false">
-    </logout-dialog>
+    <logout-dialog :show="showLogoutDialog" v-on:logged-out="isLoggedIn = false"></logout-dialog>
   </v-app>
 </template>
 
 <script>
 import LoginDialog from './components/LoginDialog'
 import LogoutDialog from './components/LogoutDialog'
+import RegisterDialog from './components/RegisterDialog'
+// import FirebaseHelper from './helpers/FirebaseHelper'
 
 export default {
   methods: {
@@ -140,6 +142,11 @@ export default {
       } else {
         vm.showLogoutDialog.bool = true
       }
+    },
+    onRegisterClicked: function () {
+      // FirebaseHelper.register('ch870814@gmail.com', 'DevilTea', 'c0h8e1n4')
+      const vm = this
+      vm.showRegisterDialog.bool = true
     }
   },
   data: () => ({
@@ -147,6 +154,7 @@ export default {
     isLoggedIn: false,
     showLoginDialog: { bool: false },
     showLogoutDialog: { bool: false },
+    showRegisterDialog: { bool: false },
     showDrawer: null,
     drawerItems: [
       {
@@ -166,7 +174,8 @@ export default {
   }),
   components: {
     LoginDialog,
-    LogoutDialog
+    LogoutDialog,
+    RegisterDialog
   },
   props: {
     source: String

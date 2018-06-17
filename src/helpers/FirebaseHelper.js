@@ -17,10 +17,16 @@ class FirebaseHelper {
     this.db = firebase.firestore()
     this.db.settings(settings)
   }
-  login (username, password) {
-    console.log(username, password)
-    var accountsRef = this.db.collection('accounts')
-    return accountsRef.where('username', '==', username).where('password', '==', password).limit(1).get()
+  isRegisteredEmail (email = '') {
+    const accountsRef = this.db.collection('accounts')
+    return accountsRef.where('email', '==', email).get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.length > 0 && email.length > 0
+      })
+  }
+  login (email, password) {
+    const accountsRef = this.db.collection('accounts')
+    return accountsRef.where('email', '==', email).where('password', '==', password).limit(1).get()
       .then((querySnapshot) => {
         let userId
         querySnapshot.forEach((doc) => {
@@ -28,6 +34,30 @@ class FirebaseHelper {
         })
         return userId
       })
+      .catch((exception) => {
+        console.log('登入錯誤')
+      })
+  }
+  register (email, username, password) {
+    const accountsRef = this.db.collection('accounts')
+    return accountsRef.add({
+      email: email,
+      username: username,
+      password: password,
+      created_time: new Date(),
+      login_time: new Date(),
+      logout_time: new Date()
+    })
+    .then(() => {
+      return true
+    })
+    .catch((exception) => {
+      console.log('註冊錯誤')
+      return false
+    })
   }
 }
-export default FirebaseHelper
+
+const instance = new FirebaseHelper()
+
+export default instance
