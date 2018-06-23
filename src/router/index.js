@@ -6,6 +6,7 @@ import CategoryList from '@/components/CategoryList'
 import PostList from '@/components/PostList'
 import TestDrawer1 from '@/components/TestDrawer1'
 import TestDrawer2 from '@/components/TestDrawer2'
+import Chat from '@/components/Chat'
 
 Vue.use(Router)
 
@@ -42,6 +43,12 @@ export default new Router({
           path: '/test2',
           components: {
             drawer: TestDrawer2
+          }
+        },
+        {
+          path: '/messaging',
+          components: {
+            drawer: Chat
           }
         }
       ]
