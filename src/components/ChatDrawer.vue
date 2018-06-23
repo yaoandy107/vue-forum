@@ -1,26 +1,17 @@
 <template>
-  <v-list dense>
+  <v-list>
     <template v-for="item in items">
-      <v-layout
-        v-if="item.heading"
-        :key="item.heading"
-        row
-        align-center
-      >
-        <v-flex xs12>
-          <v-subheader v-if="item.heading">
-            {{ item.heading }}
-          </v-subheader>
-        </v-flex>
-        <v-flex xs6 class="text-xs-center">
-          <a href="#!" class="body-2 black--text">EDIT</a>
-        </v-flex>
-      </v-layout>
-      <v-list-tile v-else :key="item.text" @click="">
+      <v-list-tile :key="item.text" @click="" avatar>
+        <v-list-tile-avatar>
+          <img src="https://vuetifyjs.com/static/doc-images/john.jpg" alt="avatar">
+        </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title>
-            {{ item.text }}
+            {{ item.userName }}
           </v-list-tile-title>
+          <v-list-tile-sub-title>
+            {{ item.message}}
+          </v-list-tile-sub-title>
         </v-list-tile-content>
       </v-list-tile>
     </template>
@@ -31,14 +22,14 @@
 export default {
   data: () => ({
     items: [
-      { text: 'TestDrawer1-1' },
-      { text: 'TestDrawer1-2' },
-      { text: 'TestDrawer1-3' },
-      { text: 'TestDrawer1-4' },
-      { text: 'TestDrawer1-5' },
-      { text: 'TestDrawer1-6' },
-      { text: 'TestDrawer1-7' },
-      { text: 'TestDrawer1-8' }
+      { userName: '測試人員', message: '您好，請問你現在方便嗎？' },
+      { userName: '喵嗚星人', message: '訊息' },
+      { userName: '喵嗚星人', message: '訊息' },
+      { userName: '喵嗚星人', message: '訊息' },
+      { userName: '喵嗚星人', message: '訊息' },
+      { userName: '喵嗚星人', message: '訊息' },
+      { userName: '喵嗚星人', message: '訊息' },
+      { userName: '喵嗚星人', message: '訊息' }
     ]
   })
 }
