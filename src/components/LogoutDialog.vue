@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import FirebaseHelper from '../helpers/FirebaseHelper'
+import FirebaseHelper from '@/helpers/FirebaseHelper'
 
 export default {
   props: {

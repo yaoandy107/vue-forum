@@ -55,7 +55,7 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha'
-import FirebaseHelper from '../helpers/FirebaseHelper'
+import FirebaseHelper from '@/helpers/FirebaseHelper'
 
 export default {
   props: {
