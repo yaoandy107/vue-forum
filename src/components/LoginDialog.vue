@@ -33,7 +33,7 @@
         </v-container>
       </v-card-text>
       <!-- Recaptcha -->
-      <!-- <v-container align-content-center="true">
+      <v-container align-content-center="true">
         <vue-recaptcha
           ref="recaptcha"
           class="recaptcha" 
@@ -41,7 +41,7 @@
           @expired="onCaptchaExpired" 
           sitekey="6LebGl8UAAAAAMdUD8LvxbQ6rBhYaNpYjdiTe79x"
         ></vue-recaptcha>
-      </v-container> -->
+      </v-container>
       <!-- 登入按鈕 -->
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -95,7 +95,7 @@ export default {
         isError: false,
         hint: ''
       },
-      hasPassedRecaptcha: true// false
+      hasPassedRecaptcha: false
     }
   },
   methods: {
@@ -103,7 +103,7 @@ export default {
       const vm = this
       vm.inputEmail = undefined
       vm.inputPassword = undefined
-      // vm.$refs.recaptcha.reset()
+      vm.$refs.recaptcha.reset()
       vm.hasPassedRecaptcha = false
       vm.emailCheck.hasChecked = false
       vm.emailCheck.isError = false

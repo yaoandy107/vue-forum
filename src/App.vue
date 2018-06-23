@@ -194,16 +194,6 @@ export default {
 </script>
 
 <style>
-.recaptcha {
-  display: flex;
-  justify-content: center;
-}
-.progress-circular {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-}
 .list {
   padding: 0;
 }
