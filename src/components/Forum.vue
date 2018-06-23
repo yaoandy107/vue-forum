@@ -3,6 +3,7 @@
     <!-- 導航欄 -->
     <v-toolbar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
+      :clipped-right="$vuetify.breakpoint.lgAndUp"
       color="blue darken-3"
       dark
       app
@@ -10,7 +11,7 @@
       <!-- 標題區 -->
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <!-- 側邊欄 icon -->
-        <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="showDrawer = !showDrawer"></v-toolbar-side-icon>
+        <v-toolbar-side-icon class="hidden-lg-and-up" @click.stop="showDrawer = !showDrawer"></v-toolbar-side-icon>
         <!-- 標題 -->
         <span>{{ title }}</span>
       </v-toolbar-title>
@@ -24,9 +25,6 @@
       </v-text-field>
       <!-- 自動間隔 -->
       <v-spacer></v-spacer>
-      <!-- <v-btn icon>
-        <v-icon>apps</v-icon>
-      </v-btn> -->
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
@@ -37,17 +35,16 @@
       <!-- 登入/登出按鈕 -->
       <v-btn class="hidden-xs-only" outline v-on:click="onLoginLogoutClicked">
         <span>{{ isLoggedIn ? '登出' : '登入' }}</span>
-      </v-btn>  
-      <!-- Logo -->
-      <!-- <v-btn icon large>
-        <v-avatar size="32px" tile>
-          <img
-            src="https://vuetifyjs.com/static/doc-images/logo.svg"
-            alt="Vuetify"
-          >
-        </v-avatar>
-      </v-btn> -->
+      </v-btn>
     </v-toolbar>
+    <!-- 側邊欄 -->
+    <v-navigation-drawer
+      clipped
+      v-model="showDrawer"
+      fixed
+      app>
+      <router-view name="drawer"></router-view>
+    </v-navigation-drawer>
     <!-- 內容主體 -->
     <v-content>
       <router-view>
@@ -98,7 +95,8 @@ export default {
     userId: undefined,
     showLoginDialog: { bool: false },
     showLogoutDialog: { bool: false },
-    showRegisterDialog: { bool: false }
+    showRegisterDialog: { bool: false },
+    showDrawer: null
   }),
   components: {
     LoginDialog,

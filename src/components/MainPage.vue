@@ -1,10 +1,11 @@
 <template>
-  <v-app id="inspire">
-    <!-- 側邊欄 -->
+  <v-content>
+    <!-- 右側邊欄 -->
     <v-navigation-drawer
       clipped
       v-model="showDrawer"
       fixed
+      right
       app>
       <v-list dense>
         <template v-for="item in drawerItems">
@@ -70,7 +71,7 @@
       <router-view>
       </router-view>
     </v-content>
-  </v-app>
+  </v-content>
 </template>
 
 <script>
@@ -80,19 +81,7 @@ export default {
   data: () => ({
     showDrawer: null,
     drawerItems: [
-      {
-        icon: 'keyboard_arrow_up',
-        'icon-alt': 'keyboard_arrow_down',
-        text: '論壇版',
-        model: true,
-        children: [{ text: '學術' }, { text: '八卦' }, { text: '西施' }]
-      },
-      { icon: 'contacts', text: '好友' },
-      { icon: 'history', text: '對話紀錄' },
-      { icon: 'settings', text: '設定' },
-      { icon: 'chat_bubble', text: '回饋' },
-      { icon: 'help', text: '幫助' }
-      // { icon: 'phonelink', text: 'App 下載' },
+
     ]
   }),
   components: {
