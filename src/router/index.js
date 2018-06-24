@@ -4,21 +4,23 @@ import Forum from '@/components/Forum'
 import MainPage from '@/components/MainPage'
 import CategoryList from '@/components/CategoryList'
 import PostList from '@/components/PostList'
-import TestDrawer1 from '@/components/TestDrawer1'
-import TestDrawer2 from '@/components/TestDrawer2'
+import Post from '@/components/Post'
+
 import Chat from '@/components/Chat'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
+      redirect: '/category',
       component: Forum,
       children: [
         {
-          path: '/',
+          path: 'category',
+          redirect: '/category/all',
           name: 'home',
           components: {
             default: MainPage,
@@ -26,24 +28,19 @@ export default new Router({
           },
           children: [
             {
-              path: '/category/:category',
+              path: ':category',
               name: 'category',
               component: PostList,
               props: true
+            },
+            {
+              path: ':category/:postId',
+              name: 'post',
+              component: Post,
+              props: true
             }
-          ]
-        },
-        {
-          path: '/test1',
-          components: {
-            drawer: TestDrawer1
-          }
-        },
-        {
-          path: '/test2',
-          components: {
-            drawer: TestDrawer2
-          }
+          ],
+          props: true
         },
         {
           path: '/messaging',
@@ -55,3 +52,4 @@ export default new Router({
     }
   ]
 })
+export default router
