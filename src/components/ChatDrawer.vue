@@ -19,7 +19,14 @@
 </template>
 
 <script>
+import FirebaseHelper from '@/helpers/FirebaseHelper'
 export default {
+  created: async function () {
+    FirebaseHelper.getFriendList('6ocs4VwRRvhVftUjjSuZ')
+      .then((friendList) => {
+        console.log(friendList)
+      })
+  },
   data: () => ({
     items: [
       { userName: '測試人員', message: '您好，請問你現在方便嗎？' },
