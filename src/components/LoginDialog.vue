@@ -164,6 +164,7 @@ export default {
       FirebaseHelper.login(vm.inputEmail, vm.inputPassword)
       .then((userId) => {
         vm.showProgress = false
+        this.GLOBAL.userId = userId
         if (userId) {
           vm.showProgress = false
           vm.$emit('logged-in', userId)

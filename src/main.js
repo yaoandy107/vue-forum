@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-
+import global_ from './components/Global'
 // 自定義主題顏色
 // Vue.use(Vuetify, { theme: {
 //   primary: '#ee44aa',
@@ -20,6 +20,7 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
+Vue.prototype.GLOBAL = global_
 
 /* eslint-disable no-new */
 new Vue({

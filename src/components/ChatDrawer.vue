@@ -26,8 +26,7 @@ export default {
   },
   methods: {
     getFriendList: function () {
-      console.log(this.GLOBAL.id)
-      FirebaseHelper.getFriendList('6ocs4VwRRvhVftUjjSuZ')
+      FirebaseHelper.getFriendList(this.GLOBAL.userId)
       .then((friendList) => {
         this.items = friendList.friends
       })
