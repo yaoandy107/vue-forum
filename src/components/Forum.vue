@@ -46,10 +46,8 @@
       <router-view name="drawer"></router-view>
     </v-navigation-drawer>
     <!-- 內容主體 -->
-    <v-content>
-      <router-view>
-      </router-view>
-    </v-content>
+    <router-view>
+    </router-view>
     <!-- Dialog -->
     <!-- 註冊對話方塊 -->
     <register-dialog :show="showRegisterDialog" :toggle="showRegisterDialog.bool"></register-dialog>

@@ -86,6 +86,77 @@ class FirebaseHelper {
       console.log('好友列表取得失敗')
     })
   }
+  getCategoryList () {
+    const categoriesRef = this.db.collection('categories')
+    return categoriesRef.get()
+    .then((querySnapshot) => {
+      let categoryList = []
+      querySnapshot.forEach((doc) => {
+        categoryList.push({ url: doc.id, text: doc.data().name })
+      })
+      return categoryList
+    })
+  }
+  getPostList (category, orderBy = '') {
+    const postsRef = this.db.collection('posts')
+    const path = 'categories.' + category
+    let tempQuery = postsRef.where(path, '<', new Date())
+    switch (orderBy) {
+      case 'explore':
+        tempQuery = tempQuery.orderBy('categories.num_of_explore')
+        break
+      case 'like':
+        tempQuery = tempQuery.orderBy('categories.num_of_like')
+        break
+      case 'reply':
+        tempQuery = tempQuery.orderBy('categories.num_of_reply')
+        break
+      default:
+        tempQuery = tempQuery.orderBy('categories.' + category)
+        break
+    }
+    return tempQuery.get()
+    .then((querySnapshot) => {
+      let postList = []
+      querySnapshot.forEach((doc) => {
+        postList.push({ postId: doc.id, title: doc.data().title, author: doc.data().author, like: doc.data().num_of_like, reply: doc.data().num_of_reply, explore: doc.data().num_of_explore })
+      })
+      return postList
+    })
+  }
+  getPostData (postId) {
+    const postsRef = this.db.collection('posts')
+    return postsRef.doc(postId).get()
+    .then((documentSnapshot) => {
+      return documentSnapshot.data()
+    })
+  }
+  addPostExplore (postId) {
+    const postsRef = this.db.collection('posts')
+    return this.getPostData(postId)
+    .then((data) => {
+      return postsRef.doc(postId).set({
+        num_of_explore: (data.num_of_explore || 0) + 1
+      }, { merge: true })
+    })
+    // .then(() => {
+    //   console.log('瀏覽數 + 1')
+    // })
+  }
+  addPost (author, category, title, content) {
+    const postsRef = this.db.collection('posts')
+    let temp = {}
+    temp[category] = new Date()
+    return postsRef.add({
+      author: author,
+      categories: temp,
+      title: title,
+      content: content,
+      num_of_like: 0,
+      num_of_reply: 0,
+      num_of_explore: 0
+    })
+  }
 }
 
 const instance = new FirebaseHelper()

@@ -13,6 +13,7 @@
                 :autofocus="true" 
                 :error="emailCheck.isError"
                 :hint="emailCheck.hint"
+                persistent-hint
                 v-model='inputEmail'
               ></v-text-field>
             </v-flex>
@@ -21,6 +22,7 @@
                 label="用戶名" 
                 :error="usernameCheck.isError"
                 :hint="usernameCheck.hint"
+                persistent-hint
                 v-model='inputUsername'
               ></v-text-field>
             </v-flex>
@@ -32,6 +34,7 @@
                 label="密碼"
                 :error="passwordCheck.isError"
                 :hint="passwordCheck.hint"
+                persistent-hint
                 v-model='inputPassword'
               ></v-text-field>
             </v-flex>
@@ -122,7 +125,7 @@ export default {
       vm.inputUsername = undefined
       vm.inputPassword = undefined
       // vm.$refs.recaptcha.reset()
-      vm.hasPassedRecaptcha = false
+      // vm.hasPassedRecaptcha = false
       vm.emailCheck.hasChecked = false
       vm.emailCheck.isError = false
       vm.emailCheck.hint = ''

@@ -14,6 +14,7 @@
                 :error="emailCheck.isError"
                 :hint="emailCheck.hint"
                 :autofocus="true" 
+                persistent-hint
                 v-model='inputEmail'
               ></v-text-field>
             </v-flex>
@@ -26,6 +27,7 @@
                 :type="hide ? 'password' : 'text'" 
                 :error="passwordCheck.isError"
                 :hint="passwordCheck.hint"
+                persistent-hint
                 v-model='inputPassword'
               ></v-text-field>
             </v-flex>
@@ -45,7 +47,7 @@
       <!-- 登入按鈕 -->
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn :disabled="!hasPassedRecaptcha" color="green darken-1" flat v-on:click="login">登入</v-btn>
+        <v-btn :disabled="!hasPassedRecaptcha || (!emailCheck.hasChecked || emailCheck.isError) || (!passwordCheck.hasChecked || passwordCheck.isError)" color="green darken-1" flat v-on:click="login">登入</v-btn>
       </v-card-actions>
     </v-card>
     <!-- 進度圈 -->
@@ -104,7 +106,7 @@ export default {
       vm.inputEmail = undefined
       vm.inputPassword = undefined
       // vm.$refs.recaptcha.reset()
-      vm.hasPassedRecaptcha = false
+      // vm.hasPassedRecaptcha = false
       vm.emailCheck.hasChecked = false
       vm.emailCheck.isError = false
       vm.emailCheck.hint = ''
