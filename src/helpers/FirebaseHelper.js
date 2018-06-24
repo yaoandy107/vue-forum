@@ -76,6 +76,16 @@ class FirebaseHelper {
       return false
     })
   }
+  getFriendList (userId) {
+    const accountsRef = this.db.collection('friends')
+    return accountsRef.doc(userId).get()
+      .then((doc) => {
+        return doc.data()
+      })
+    .catch((exception) => {
+      console.log('好友列表取得失敗')
+    })
+  }
 }
 
 const instance = new FirebaseHelper()
