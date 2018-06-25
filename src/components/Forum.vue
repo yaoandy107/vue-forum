@@ -42,6 +42,7 @@
       clipped
       v-model="showDrawer"
       fixed
+      hide-overlay
       app>
       <router-view name="drawer"></router-view>
     </v-navigation-drawer>
