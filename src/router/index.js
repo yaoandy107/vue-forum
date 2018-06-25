@@ -44,6 +44,7 @@ const router = new Router({
         },
         {
           path: '/messaging',
+          name: 'messaging',
           components: {
             default: ChatPage,
             drawer: ChatDrawer
