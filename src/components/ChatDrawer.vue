@@ -46,3 +46,11 @@ export default {
   })
 }
 </script>
+<style>
+@media screen and (max-width: 600px) {
+  .navigation-drawer--open {
+    width: 100% !important;
+  }
+}
+
+</style>
