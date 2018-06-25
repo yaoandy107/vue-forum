@@ -17,8 +17,7 @@ import FirebaseHelper from '@/helpers/FirebaseHelper'
 
 export default {
   props: {
-    show: Object,
-    userid: String
+    show: Object
   },
   data: () => {
     return {
@@ -27,7 +26,7 @@ export default {
   methods: {
     logout: async function () {
       const vm = this
-      FirebaseHelper.logout(vm.userid)
+      FirebaseHelper.logout(vm.globalObject.userId)
       .then((success) => {
         if (success) {
           vm.show.bool = false

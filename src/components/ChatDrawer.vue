@@ -24,9 +24,15 @@ export default {
   created: async function () {
     this.getFriendList()
   },
+  watch: {
+    'globalObject.userId': function () {
+      const vm = this
+      vm.getFriendList()
+    }
+  },
   methods: {
     getFriendList: function () {
-      FirebaseHelper.getFriendList(this.GLOBAL.userId)
+      FirebaseHelper.getFriendList(this.globalObject.userId)
       .then((friendList) => {
         this.items = friendList.friends
       })
