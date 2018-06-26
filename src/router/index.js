@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ForumPage from '@/components/ForumPage'
-import CategoryList from '@/components/CategoryList'
 import PostList from '@/components/PostList'
 import Post from '@/components/Post'
 
@@ -17,10 +16,7 @@ const router = new Router({
     {
       path: '/forum',
       name: 'forum',
-      components: {
-        default: ForumPage,
-        drawer: CategoryList
-      },
+      component: ForumPage,
       children: [
         {
           path: ':category',

@@ -20,7 +20,12 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
-
+const globalObject = {
+  showDrawer: null
+}
+Vue.mixin({
+  data: () => ({ globalObject })
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

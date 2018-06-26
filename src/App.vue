@@ -2,8 +2,8 @@
   <v-app id="inspire">
     <!-- 導航欄 -->
     <v-toolbar
-      :clipped-left="$vuetify.breakpoint.lgAndUp"
-      :clipped-right="$vuetify.breakpoint.lgAndUp"
+      :clipped-left="$vuetify.breakpoint.smAndUp"
+      :clipped-right="$vuetify.breakpoint.smAndUp"
       color="blue darken-3"
       dark
       app
@@ -11,7 +11,7 @@
       <!-- 標題區 -->
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <!-- 側邊欄 icon -->
-        <v-toolbar-side-icon class="hidden-lg-and-up" @click.stop="showDrawer = !showDrawer"></v-toolbar-side-icon>
+        <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="globalObject.showDrawer = !globalObject.showDrawer"></v-toolbar-side-icon>
         <!-- 標題 -->
         <span>{{ title }}</span>
       </v-toolbar-title>
@@ -37,14 +37,6 @@
         <span>{{ isLoggedIn ? '登出' : '登入' }}</span>
       </v-btn>
     </v-toolbar>
-    <!-- 側邊欄 -->
-    <v-navigation-drawer
-      clipped
-      v-model="showDrawer"
-      fixed
-      app>
-      <router-view name="drawer"></router-view>
-    </v-navigation-drawer>
     <!-- 內容主體 -->
     <router-view>
     </router-view>
@@ -93,8 +85,7 @@ export default {
     userId: undefined,
     showLoginDialog: { bool: false },
     showLogoutDialog: { bool: false },
-    showRegisterDialog: { bool: false },
-    showDrawer: null
+    showRegisterDialog: { bool: false }
   }),
   components: {
     LoginDialog,
