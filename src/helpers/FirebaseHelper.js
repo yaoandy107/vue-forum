@@ -101,7 +101,7 @@ class FirebaseHelper {
       case 'reply':
         tempQuery = tempQuery.orderBy('categories.num_of_reply')
         break
-      default:
+      case 'created_time':
         tempQuery = tempQuery.orderBy('categories.' + category)
         break
     }
