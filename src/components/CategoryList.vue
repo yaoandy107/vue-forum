@@ -12,7 +12,7 @@
       </v-flex>
     </v-layout>
     <template v-for="category in categories">
-      <v-list-tile active-class="default-class active-class" ripple :key="category.text" @click="() => test(category.url)">
+      <v-list-tile active-class="default-class active-class" :to="{ name: 'category', params: {category: category.url} }" ripple :key="category.text">
         <v-list-tile-content>
           <v-list-tile-title>
             {{ category.text }}
@@ -33,6 +33,11 @@ export default {
       vm.updateList()
     })
   },
+  beforeRouteUpdate: function (to, from, next) {
+    next((vm) => {
+      vm.updateList()
+    })
+  },
   methods: {
     updateList: function () {
       const vm = this
@@ -42,16 +47,6 @@ export default {
         vm.categories.push(...list)
         vm.showProgress = false
       })
-    },
-    test: function (category) {
-      const vm = this
-      vm.$router.push({ name: 'category', params: { category: category } })
-      console.log('ass')
-      // FirebaseHelper.addPost('authorC', 'c', 'titleC', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorC++', 'cpp', 'titleC++', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorJava', 'java', 'titleJava', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorJavaScript', 'javascript', 'titleJavaScript', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorPython', 'python', 'titlePython', 'ContentContentContentContentContentContentContent')
     }
   },
   data: () => ({
