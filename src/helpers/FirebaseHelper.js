@@ -32,7 +32,7 @@ class FirebaseHelper {
       let userData = {}
       querySnapshot.forEach((doc) => {
         userData.userId = doc.id
-        userData.userName = doc.data().username
+        userData.userName = doc.data().userName
         accountsRef.doc(userData.userId).set({
           login_time: new Date(),
           logged_in: true
@@ -58,11 +58,11 @@ class FirebaseHelper {
       return false
     })
   }
-  register (email, username, password) {
+  register (email, userName, password) {
     const accountsRef = this.db.collection('accounts')
     return accountsRef.add({
       email: email,
-      username: username,
+      userName: userName,
       password: password,
       created_time: new Date(),
       login_time: null,
@@ -79,13 +79,17 @@ class FirebaseHelper {
   }
   getFriendList (userId) {
     if (userId) {
-      const accountsRef = this.db.collection('friends')
-      return accountsRef.doc(userId).get()
-        .then((doc) => {
-          return doc.data()
+      const accountsRef = this.db.collection('friends').doc(userId).collection('friends')
+      return accountsRef.get()
+        .then((querySnapshot) => {
+          let friendList = []
+          querySnapshot.forEach((doc) => {
+            friendList.push(doc.data())
+          })
+          return friendList
         })
       .catch((exception) => {
-        console.log('好友列表取得失敗')
+        console.log(exception)
       })
     }
   }
@@ -105,8 +109,45 @@ class FirebaseHelper {
       messages: message
     }, {merge: true})
   }
+  searchUserByEmail (email) {
+    if (email) {
+      const accountsRef = this.db.collection('accounts')
+      return accountsRef.where('email', '==', email).limit(1).get()
+        .then((querySnapshot) => {
+          let userInfo
+          querySnapshot.forEach((doc) => {
+            userInfo = doc.data()
+          })
+          return userInfo
+        })
+        .catch((exception) => {
+          console.log(exception)
+        })
+    }
+  }
+  addFriend (userId, email) {
+    if (email) {
+      const accountsRef = this.db.collection('accounts')
+      return accountsRef.where('email', '==', email).limit(1).get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const friendsRef = this.db.collection('friends').doc(userId).collection('friends')
+            let friend = doc.data()
+            friend.userId = doc.id
+            friendsRef.add(friend)
+          })
+        })
+        .catch((exception) => {
+          console.log(exception)
+        })
+    }
+  }
   getTimeStamp () {
-    return firebase.firestore.FieldValue.serverTimestamp
+    const now = new Date()
+    const day = `${now.getMonth()}月${now.getDate()}日`
+    const hours = now.getHours()
+    const minutes = now.getMinutes()
+    return `${day} ${(hours >= 12) ? '下午' : '上午'} ${hours}:${(minutes < 10) ? '0' + minutes : minutes}`
   }
   getCategoryList () {
     const categoriesRef = this.db.collection('categories')

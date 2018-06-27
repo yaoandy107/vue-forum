@@ -84,9 +84,9 @@ export default {
       const vm = this
       vm.checkEmail(email)
     },
-    inputUsername (username) {
+    inputUsername (userName) {
       const vm = this
-      vm.checkUsername(username)
+      vm.checkUsername(userName)
     },
     inputPassword (password) {
       const vm = this
@@ -164,11 +164,11 @@ export default {
         vm.emailCheck.hint = '必填欄位'
       }
     },
-    checkUsername: function (username) {
+    checkUsername: function (userName) {
       const vm = this
       vm.usernameCheck.hasChecked = true
-      if (username) {
-        if (username.length >= 8) {
+      if (userName) {
+        if (userName.length >= 8) {
           vm.usernameCheck.isError = false
           vm.usernameCheck.hint = ''
         } else {

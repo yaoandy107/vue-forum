@@ -81,30 +81,30 @@ export default {
     sendMessage (event) {
       console.log(event)
       const vm = this
-      const message = vm.message
+      const message = vm.message.trim()
       const userId = vm.globalObject.userData.userId
       const friendId = vm.friendId
+      if (!message) {
+        return
+      }
       // 如果是按住shift則不傳送訊息(多行輸入)
       if (event.shiftKey) {
         return false
       }
       // 如果輸入是空則不傳送訊息
       if (message.length <= 1 && message.trim() === '') {
-        // 避免enter產生的空白換行
-        event.preventDefault()
         return false
       }
       vm.messages.push({
         userName: vm.globalObject.userData.userName,
         userId: vm.globalObject.userData.userId,
         type: 'text',
-        message: message
+        message: message.trim(),
+        timeStamp: FirebaseHelper.getTimeStamp()
       })
-      // console.log(vm.messages)
       FirebaseHelper.sendMessage(userId, friendId, vm.messages)
-      // 清空輸入欄位並避免enter產生的空白換行
+      // 清空輸入欄位並
       vm.message = ''
-      event.preventDefault()
     }
   },
   data: () => ({
@@ -182,7 +182,7 @@ export default {
   text-align: right;
 }
 .message--self .message__message {
-  background-color: #AFF47E;
+  background-color: #81D4FA;
 }
 .message--self .message__time {
   margin: 0px -16px 5px 0px;
