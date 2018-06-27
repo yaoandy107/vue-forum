@@ -29,18 +29,19 @@ class FirebaseHelper {
     const accountsRef = this.db.collection('accounts')
     return accountsRef.where('email', '==', email).where('password', '==', password).limit(1).get()
     .then((querySnapshot) => {
-      let userId
+      let userData = {}
       querySnapshot.forEach((doc) => {
-        userId = doc.id
-        accountsRef.doc(userId).set({
+        userData.userId = doc.id
+        userData.userName = doc.data().username
+        accountsRef.doc(userData.userId).set({
           login_time: new Date(),
           logged_in: true
         }, { merge: true })
       })
-      return userId
+      return userData
     })
     .catch((exception) => {
-      console.log('登入錯誤')
+      console.log(exception)
     })
   }
   logout (userId) {

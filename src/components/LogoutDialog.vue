@@ -26,7 +26,7 @@ export default {
   methods: {
     logout: async function () {
       const vm = this
-      FirebaseHelper.logout(vm.globalObject.userId)
+      FirebaseHelper.logout(vm.globalObject.userData.userId)
       .then((success) => {
         if (success) {
           vm.show.bool = false

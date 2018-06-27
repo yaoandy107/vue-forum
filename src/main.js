@@ -23,22 +23,28 @@ Vue.use(Vuetify)
 Vue.config.productionTip = false
 
 const globalObject = {
-  userId: '',
+  userData: {
+    userId: '',
+    userName: ''
+  },
   showDrawer: null
 }
 const global = {
   methods: {
-    saveUserId (userId) {
+    saveUserData (userData) {
       const vm = this
-      vm.globalObject.userId = userId
-      localStorage.setItem('userId', userId)
+      vm.globalObject.userData = userData
+      localStorage.setItem('userId', userData.userId)
+      localStorage.setItem('userName', userData.userName)
     },
-    clearUserId () {
+    clearUserData () {
       localStorage.removeItem('userId')
-      this.globalObject.userId = ''
+      localStorage.removeItem('userName')
+      this.globalObject.userData = {}
     },
-    initUserId () {
-      globalObject.userId = localStorage.getItem('userId')
+    initUserData () {
+      globalObject.userData.userId = localStorage.getItem('userId')
+      globalObject.userData.userName = localStorage.getItem('userName')
     }
   },
   data: () => ({
@@ -53,7 +59,7 @@ new Vue({
   router,
   components: { App },
   beforeCreate () {
-    global.methods.initUserId()
+    global.methods.initUserData()
   },
   template: '<App/>'
 })

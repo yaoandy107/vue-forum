@@ -162,11 +162,11 @@ export default {
       const vm = this
       vm.showProgress = true
       FirebaseHelper.login(vm.inputEmail, vm.inputPassword)
-      .then((userId) => {
+      .then((userData) => {
         vm.showProgress = false
-        if (userId) {
+        if (userData) {
           vm.showProgress = false
-          vm.$emit('logged-in', userId)
+          vm.$emit('logged-in', userData)
           vm.show.bool = false
         } else {
           vm.passwordCheck.isError = true

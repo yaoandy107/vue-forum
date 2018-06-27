@@ -25,9 +25,9 @@ export default {
     this.getFriendList()
   },
   watch: {
-    'globalObject.userId': function () {
+    'globalObject.userData.userId': function () {
       const vm = this
-      if (vm.globalObject.userId) {
+      if (vm.globalObject.userData.userId) {
         vm.getFriendList()
       } else {
         vm.friendList = {}
@@ -36,11 +36,11 @@ export default {
   },
   methods: {
     getFriendList () {
-      FirebaseHelper.getFriendList(this.globalObject.userId)
+      FirebaseHelper.getFriendList(this.globalObject.userData.userId)
         .then((friendList) => {
           this.friendList = friendList.friends
         })
-        .catch(() => {
+        .catch((e) => {
           console.log('取得好友列表錯誤')
         })
     },
@@ -60,5 +60,4 @@ export default {
     width: 100% !important;
   }
 }
-
 </style>

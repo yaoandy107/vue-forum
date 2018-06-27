@@ -46,7 +46,7 @@
     <!-- 登入對話方塊 -->
     <login-dialog :show="showLoginDialog" :toggle="showLoginDialog.bool" v-on:logged-in="onLoggedIn"></login-dialog>
     <!-- 登出確認對話方塊 -->
-    <logout-dialog :show="showLogoutDialog" :toggle="showLoginDialog.bool" :userid="userId" v-on:logged-out="onLoggedOut"></logout-dialog>
+    <logout-dialog :show="showLogoutDialog" :toggle="showLoginDialog.bool" :userid="globalObject.userData.userId" v-on:logged-out="onLoggedOut"></logout-dialog>
   </v-app>
 </template>
 
@@ -56,15 +56,15 @@ import LoginDialog from '@/components/LoginDialog'
 import LogoutDialog from '@/components/LogoutDialog'
 export default {
   methods: {
-    onLoggedIn: function (userId) {
+    onLoggedIn: function (userData) {
       const vm = this
       vm.isLoggedIn = true
-      vm.userId = userId
+      vm.saveUserData(userData)
     },
     onLoggedOut: function () {
       const vm = this
       vm.isLoggedIn = false
-      vm.userId = undefined
+      vm.clearUserData()
     },
     onLoginLogoutClicked: function () {
       const vm = this
@@ -82,7 +82,6 @@ export default {
   data: () => ({
     title: 'DevZone',
     isLoggedIn: false,
-    userId: undefined,
     showLoginDialog: { bool: false },
     showLogoutDialog: { bool: false },
     showRegisterDialog: { bool: false }

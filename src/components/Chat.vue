@@ -4,7 +4,7 @@
           <!-- Main -->
           <template v-for="item in messages">
               <!-- other people -->
-              <template v-if="item.userId != globalObject.userId">
+              <template v-if="item.userId != globalObject.userData.userId">
                   <div class="message">
                       <img src="https://vuetifyjs.com/static/doc-images/john.jpg" class="message__user" draggable="false">
                       <div class="message__content">
@@ -18,7 +18,7 @@
                   </div>
               </template>
               <!-- 區塊：self -->
-              <template v-if="item.userId == globalObject.userId">
+              <template v-if="item.userId == globalObject.userData.userId">
                   <div class="message message--self">
                       <div class="message__time">{{item.timeStamp}}</div>
                       <div class="message__content">
@@ -54,9 +54,9 @@ import FirebaseHelper from '@/helpers/FirebaseHelper'
 
 export default {
   watch: {
-    'globalObject.userId': function () {
+    'globalObject.userData.userId': function () {
       const vm = this
-      if (!vm.globalObject.userId) {
+      if (!vm.globalObject.userData.userId) {
         vm.messages = []
       }
     }
@@ -71,7 +71,7 @@ export default {
   methods: {
     setChat () {
       const vm = this
-      const userId = vm.globalObject.userId
+      const userId = vm.globalObject.userData.userId
       FirebaseHelper.getChat(userId, vm.friendId)
         .onSnapshot((doc) => {
           vm.chatId = doc.id
@@ -82,7 +82,7 @@ export default {
       console.log(event)
       const vm = this
       const message = vm.message
-      const userId = vm.globalObject.userId
+      const userId = vm.globalObject.userData.userId
       const friendId = vm.friendId
       // 如果是按住shift則不傳送訊息(多行輸入)
       if (event.shiftKey) {
@@ -95,8 +95,8 @@ export default {
         return false
       }
       vm.messages.push({
-        userName: vm.userName,
-        userId: vm.globalObject.userId,
+        userName: vm.globalObject.userData.userName,
+        userId: vm.globalObject.userData.userId,
         type: 'text',
         message: message
       })
