@@ -77,14 +77,32 @@ class FirebaseHelper {
     })
   }
   getFriendList (userId) {
-    const accountsRef = this.db.collection('friends')
-    return accountsRef.doc(userId).get()
-      .then((doc) => {
-        return doc.data()
+    if (userId) {
+      const accountsRef = this.db.collection('friends')
+      return accountsRef.doc(userId).get()
+        .then((doc) => {
+          return doc.data()
+        })
+      .catch((exception) => {
+        console.log('好友列表取得失敗')
       })
-    .catch((exception) => {
-      console.log('好友列表取得失敗')
-    })
+    }
+  }
+  getChat (userId, friendId) {
+    if (userId && friendId) {
+      const chatRef = this.db.collection('chats').doc(userId).collection('chats').doc(friendId)
+      return chatRef
+    }
+  }
+  sendMessage (userId, friendId, message) {
+    console.log(message)
+    const chatRef = this.db.collection('chats').doc(userId).collection('chats').doc(friendId)
+    chatRef.set({
+      messages: message
+    }, {merge: true})
+  }
+  getTimeStamp () {
+    return firebase.firestore.FieldValue.serverTimestamp
   }
   getCategoryList () {
     const categoriesRef = this.db.collection('categories')
