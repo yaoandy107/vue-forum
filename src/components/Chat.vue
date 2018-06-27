@@ -41,7 +41,7 @@
               rows="4"
               textarea
               hide-details
-              @keyup="sendMessage($event)"
+              @keyup.enter="sendMessage($event)"
             ></v-text-field>
           </v-flex>
         </v-layout>
