@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import ForumPage from '@/components/ForumPage'
 import PostList from '@/components/PostList'
 import ChatPage from '@/components/ChatPage'
-import ChatDrawer from '@/components/ChatDrawer'
 import Post from '@/components/Post'
 import Chat from '@/components/Chat'
 
@@ -28,26 +27,23 @@ const router = new Router({
           props: true
         },
         {
-<<<<<<< HEAD
-          path: '/messaging',
-          name: 'messaging',
-          components: {
-            default: ChatPage,
-            drawer: ChatDrawer
-          },
-          children: [
-            {
-              path: ':friendId',
-              name: 'chat',
-              component: Chat,
-              props: true
-            }
-          ],
-=======
           path: ':category/:postId',
           name: 'post',
           component: Post,
->>>>>>> 97744d6360fbf2ad92baaf3502ea538418677cfa
+          props: true
+        }
+      ],
+      props: true
+    },
+    {
+      path: '/messaging',
+      name: 'messaging',
+      component: ChatPage,
+      children: [
+        {
+          path: ':friendId',
+          name: 'chat',
+          component: Chat,
           props: true
         }
       ],

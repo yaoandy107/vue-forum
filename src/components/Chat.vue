@@ -90,8 +90,7 @@ export default {
     }
   },
   data: () => ({
-    messages: [],
-    chatId: '',
+    messages: []
   }),
   props: {
     friendId: String
