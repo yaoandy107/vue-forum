@@ -96,7 +96,6 @@ class FirebaseHelper {
     }
   }
   sendMessage (userId, friendId, message) {
-    // console.log(message)
     const chatRef = this.db.collection('chats').doc(userId).collection('chats').doc(friendId)
     const chatRef2 = this.db.collection('chats').doc(friendId).collection('chats').doc(userId)
     chatRef.set({
@@ -120,29 +119,28 @@ class FirebaseHelper {
       return categoryList
     })
   }
-  getPostList (category, orderBy = '') {
+  getPostList (category, orderBy) {
     const postsRef = this.db.collection('posts')
-    const path = 'categories.' + category
-    let tempQuery = postsRef.where(path, '<', new Date())
+    let tempQuery = category === 'all' ? postsRef : postsRef.where('category', '==', category)
     switch (orderBy) {
+      case 'createdTime':
+        tempQuery = tempQuery.orderBy('createdTime', 'desc')
+        break
       case 'explore':
-        tempQuery = tempQuery.orderBy('categories.num_of_explore')
+        tempQuery = tempQuery.orderBy('numOfExplore', 'desc')
         break
       case 'like':
-        tempQuery = tempQuery.orderBy('categories.num_of_like')
+        tempQuery = tempQuery.orderBy('numOfLike', 'desc')
         break
       case 'reply':
-        tempQuery = tempQuery.orderBy('categories.num_of_reply')
-        break
-      case 'created_time':
-        tempQuery = tempQuery.orderBy('categories.' + category)
+        tempQuery = tempQuery.orderBy('numOfReply', 'desc')
         break
     }
     return tempQuery.get()
     .then((querySnapshot) => {
       let postList = []
       querySnapshot.forEach((doc) => {
-        postList.push({ postId: doc.id, title: doc.data().title, author: doc.data().author, like: doc.data().num_of_like, reply: doc.data().num_of_reply, explore: doc.data().num_of_explore })
+        postList.push({ postId: doc.id, title: doc.data().title, author: doc.data().author, like: doc.data().numOfLike, reply: doc.data().numOfReply, explore: doc.data().numOfExplore })
       })
       return postList
     })
@@ -156,18 +154,17 @@ class FirebaseHelper {
   }
   addPost (postData) {
     const postsRef = this.db.collection('posts')
-    let temp = {}
-    temp[postData.category] = new Date()
     return postsRef.add({
       authorId: postData.authorId,
       authorName: postData.authorName,
-      categories: temp,
+      category: postData.category,
       title: postData.title,
       content: postData.content,
       floor: 0,
-      num_of_like: 0,
-      num_of_reply: 0,
-      num_of_explore: 0,
+      numOfLike: 0,
+      numOfReply: 0,
+      numOfExplore: 0,
+      createdTime: new Date(),
       isMarkdown: postData.isMarkdown
     })
   }

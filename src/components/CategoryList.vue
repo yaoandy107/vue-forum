@@ -3,25 +3,34 @@
     <v-layout
       :key="heading"
       row
+      wrap
       align-center
+      style="position: relative"
     >
       <v-flex xs12>
         <v-subheader>
           {{ heading }}
         </v-subheader>
+        <v-list-tile active-class="default-class active-class" :to="{ name: 'category', params: {category: 'all'} }" ripple>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              全部文章
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <template v-for="category in categories">
+          <v-list-tile active-class="default-class active-class" :to="{ name: 'category', params: {category: category.url} }" ripple :key="category.text">
+            <v-list-tile-content>
+              <v-list-tile-title>
+                {{ category.text }}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
       </v-flex>
     </v-layout>
-    <template v-for="category in categories">
-      <v-list-tile :value="category.isActive" active-class="default-class active-class" :to="{ name: 'category', params: {category: category.url} }" ripple :key="category.text">
-        <v-list-tile-content>
-          <v-list-tile-title>
-            {{ category.text }}
-          </v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </template>
     <!-- 進度圈 -->
-    <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+    <v-progress-circular v-show="showProgress" indeterminate color="green" style="position: absolute; top: 50%; right: 50%;"></v-progress-circular>
   </v-list>
 </template>
 

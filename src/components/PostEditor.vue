@@ -1,16 +1,20 @@
 <template>
   <v-container wrap fluid>
-    <v-layout row wrap class="pa-3 ">
+    <v-layout row wrap class="pa-3" style="position: relative">
       <!-- 模式選擇 -->
-      <v-flex xs12>
+      <v-flex xs10 justify-end>
         <v-btn-toggle v-model="isMarkdown" mandatory>
-          <v-btn flat>
-            <span>一般</span>
+          <v-btn color="blue darken-2">
+            <span style="color: white">一般</span>
           </v-btn>
-          <v-btn flat>
-            <span>Markdown</span>
+          <v-btn color="blue darken-2">
+            <span style="color: white">Markdown</span>
           </v-btn>
         </v-btn-toggle>
+        <!-- 送出按鈕 -->
+        <v-btn color="blue darken-2" @click="sendNewPost">
+          <span style="color: white">送出</span>
+        </v-btn>
       </v-flex>
       <!-- 標題輸入欄 -->
       <v-flex xs12>
@@ -51,59 +55,66 @@
         class="d-inline-block pa-2"
         v-html="compiledMarkdown"
       ></v-flex>
+      <!-- 進度圈 -->
+      <v-flex xs12 style="position: absolute; top: 50%; left: 50%;">
+        <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+      </v-flex >
       <!-- 懸浮按鈕 -->
-      <v-flex xs12 style="height: 0; position: relative;">
-        <v-speed-dial
-          absolute
-          style="right: 50px; bottom: 50px"
-          fixed
-          v-model="fab"
-          direction="top"
-        >
-          <v-btn
-            slot="activator"
+      <v-layout row wrap style="position: relative">
+        <v-flex xs12>
+          <v-speed-dial
+            fixed
+            absolute
+            bottom
             v-model="fab"
-            color="teal darken-1"
-            dark
-            fab
+            direction="top"
           >
-            <v-icon>add</v-icon>
-            <v-icon>close</v-icon>
-          </v-btn>
-          <v-btn
-            fab
-            dark
-            small
-            color="blue darken-3"
-            @click="onInsertPictureClick"
-          >
-            <v-icon>insert_photo</v-icon>
-          </v-btn>
-          <v-btn
-            fab
-            dark
-            small
-            color="blue darken-2"
-            @click="onInsertLinkClick"
-          >
-            <v-icon>link</v-icon>
-          </v-btn>
-          <v-btn
-            fab
-            dark
-            small
-            color="blue darken-1"
-            @click="onInsertCodeClick"
-          >
-            <v-icon>code</v-icon>
-          </v-btn>
-        </v-speed-dial>
-      </v-flex>
+            <v-btn
+              slot="activator"
+              v-model="fab"
+              color="teal darken-1"
+              dark
+              fab
+            >
+              <v-icon>add</v-icon>
+              <v-icon>close</v-icon>
+            </v-btn>
+            <v-btn
+              fab
+              dark
+              small
+              color="blue darken-3"
+              @click="onInsertPictureClick"
+            >
+              <v-icon>insert_photo</v-icon>
+            </v-btn>
+            <v-btn
+              fab
+              dark
+              small
+              color="blue darken-2"
+              @click="onInsertLinkClick"
+            >
+              <v-icon>link</v-icon>
+            </v-btn>
+            <v-btn
+              fab
+              dark
+              small
+              color="blue darken-1"
+              @click="onInsertCodeClick"
+            >
+              <v-icon>code</v-icon>
+            </v-btn>
+          </v-speed-dial>
+        </v-flex>
+      </v-layout>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import FirebaseHelpers from '@/helpers/FirebaseHelper'
 import marked from 'marked'
 export default {
   computed: {
@@ -119,7 +130,7 @@ export default {
     },
     compiledMarkdown: function () {
       const vm = this
-      return marked(vm.currentContentPart.text, { sanitize: true })
+      return marked(vm.currentContentPart.text.replace(/( )*\n+/g, '    \n'), { sanitize: true })
     }
   },
   methods: {
@@ -131,6 +142,23 @@ export default {
     },
     onInsertCodeClick: function () {
 
+    },
+    sendNewPost: function () {
+      const vm = this
+      vm.showProgress = true
+      vm.postData.authorId = vm.globalObject.userData.userId
+      vm.postData.authorName = vm.globalObject.userData.userName
+      vm.postData.category = vm.category
+      vm.postData.content.push(vm.currentContentPart)
+      vm.currentContentPart = {
+        type: 'plain',
+        text: ''
+      }
+      FirebaseHelpers.addPost(vm.postData)
+      .then(() => {
+        vm.showProgress = false
+        vm.$router.go(-1)
+      })
     }
   },
   data: () => ({
@@ -146,7 +174,11 @@ export default {
       type: 'plain',
       text: ''
     },
-    fab: undefined
-  })
+    fab: undefined,
+    showProgress: false
+  }),
+  props: {
+    category: String
+  }
 }
 </script>

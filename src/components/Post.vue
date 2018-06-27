@@ -7,7 +7,9 @@
       </v-flex>
       <!-- 文章內容 -->
       <v-flex xs12>
-        <span>123</span>
+        <template v-for="(contentPart) in postData.content">
+          <pre :key="contentPart.text">{{ contentPart.text }}</pre>
+        </template>
       </v-flex>
       <!-- 文章留言 -->
       <v-flex xs12>
@@ -21,11 +23,18 @@
 
 <script>
 import FirebaseHelper from '@/helpers/FirebaseHelper'
+import marked from 'marked'
 export default {
   beforeRouteEnter: function (to, from, next) {
     next((vm) => {
       vm.loadPostData()
     })
+  },
+  computed: {
+    compiledMarkdown: function (contentIndex) {
+      const vm = this
+      return marked(vm.postData.content[contentIndex].text, { sanitize: true })
+    }
   },
   methods: {
     loadPostData: function () {
@@ -37,7 +46,7 @@ export default {
     }
   },
   data: () => ({
-    postData: undefined
+    postData: {}
   }),
   props: {
     postId: String
