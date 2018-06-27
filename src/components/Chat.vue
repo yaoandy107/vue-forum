@@ -98,7 +98,7 @@ export default {
         userName: vm.globalObject.userData.userName,
         userId: vm.globalObject.userData.userId,
         type: 'text',
-        message: message
+        message: message.trim()
       })
       // console.log(vm.messages)
       FirebaseHelper.sendMessage(userId, friendId, vm.messages)
