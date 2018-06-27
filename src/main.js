@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
+import VueHighlightJS from 'vue-highlightjs'
 import 'vuetify/dist/vuetify.min.css'
 
 // 自定義主題顏色
@@ -16,7 +17,7 @@ import 'vuetify/dist/vuetify.min.css'
 //   success: '#4CAF50',
 //   warning: '#FFC107'
 // }})
-
+Vue.use(VueHighlightJS)
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false

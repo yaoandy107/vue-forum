@@ -94,3 +94,6 @@ export default {
   }
 }
 </script>
+
+<style src="../static/css/style.css"></style>
+<style src="../static/css/atom-one-dark.css"></style>
