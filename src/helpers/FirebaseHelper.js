@@ -144,11 +144,7 @@ class FirebaseHelper {
     }
   }
   getTimeStamp () {
-    const now = new Date()
-    const day = `${now.getMonth()}月${now.getDate()}日`
-    const hours = now.getHours()
-    const minutes = now.getMinutes()
-    return `${day} ${(hours >= 12) ? '下午' : '上午'} ${hours}:${(minutes < 10) ? '0' + minutes : minutes}`
+    return new Date()
   }
   getCategoryList () {
     const categoriesRef = this.db.collection('categories')
