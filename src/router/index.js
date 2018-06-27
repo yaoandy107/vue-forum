@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ForumPage from '@/components/ForumPage'
 import PostList from '@/components/PostList'
+import PostEditor from '@/components/PostEditor'
 import Post from '@/components/Post'
 
 Vue.use(Router)
@@ -25,7 +26,13 @@ const router = new Router({
           props: true
         },
         {
-          path: ':category/:postId',
+          path: ':category/new',
+          name: 'newpost',
+          component: PostEditor,
+          props: true
+        },
+        {
+          path: ':category/p/:postId',
           name: 'post',
           component: Post,
           props: true

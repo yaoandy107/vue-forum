@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height>
-    <v-layout row wrap fill-height>
-      <v-flex xs12>
+    <v-layout row wrap fill-height style="position: relative;">
+      <v-flex xs12 fill-height>
         <v-tabs
           v-model="modelTab"
           fixed-tabs
@@ -20,8 +20,8 @@
           >
             <v-list three-line>
               <template v-for="(post, index) in postList">
-                <v-divider v-if="index !== 0" :inset="true" :key="index"></v-divider>
-                <v-list-tile :key="post.title" ripple @click="() => test(post.postId)">
+                <v-divider :key="index"></v-divider>
+                <v-list-tile :key="post.title" ripple :to="{ name: 'post', params: { postId: post.postId } }">
                   <v-list-tile-content>
                     <v-list-tile-title>{{ post.title }}</v-list-tile-title>
                     <v-list-tile-sub-title class="text-lg-right">{{ post.author }}</v-list-tile-sub-title>
@@ -32,9 +32,11 @@
             </v-list>
           </v-tab-item>
         </v-tabs>
-        <!-- 進度圈 -->
-        <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
       </v-flex>
+      <!-- 進度圈 -->
+      <v-flex xs12 style="position: absolute; top: 50%; left: 50%;">
+        <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+      </v-flex >
     </v-layout>
   </v-container>
 </template>
@@ -61,15 +63,12 @@ export default {
     updatePostList: function () {
       const vm = this
       vm.showProgress = true
+      vm.postList.length = 0
       FirebaseHelper.getPostList(vm.category, vm.tabs[vm.modelTab])
       .then((postList) => {
-        vm.postList.length = 0
         vm.postList.push(...postList)
         vm.showProgress = false
       })
-    },
-    test: function (postId) {
-      FirebaseHelper.addPostExplore(postId)
     }
   },
   data: () => ({

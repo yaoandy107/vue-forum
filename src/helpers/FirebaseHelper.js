@@ -121,30 +121,21 @@ class FirebaseHelper {
       return documentSnapshot.data()
     })
   }
-  addPostExplore (postId) {
-    const postsRef = this.db.collection('posts')
-    return this.getPostData(postId)
-    .then((data) => {
-      return postsRef.doc(postId).set({
-        num_of_explore: (data.num_of_explore || 0) + 1
-      }, { merge: true })
-    })
-    // .then(() => {
-    //   console.log('瀏覽數 + 1')
-    // })
-  }
-  addPost (author, category, title, content) {
+  addPost (postData) {
     const postsRef = this.db.collection('posts')
     let temp = {}
-    temp[category] = new Date()
+    temp[postData.category] = new Date()
     return postsRef.add({
-      author: author,
+      authorId: postData.authorId,
+      authorName: postData.authorName,
       categories: temp,
-      title: title,
-      content: content,
+      title: postData.title,
+      content: postData.content,
+      floor: 0,
       num_of_like: 0,
       num_of_reply: 0,
-      num_of_explore: 0
+      num_of_explore: 0,
+      isMarkdown: postData.isMarkdown
     })
   }
 }
