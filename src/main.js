@@ -33,6 +33,7 @@ const global = {
     },
     clearUserId () {
       localStorage.removeItem('userId')
+      this.globalObject.userId = ''
     },
     initUserId () {
       globalObject.userId = localStorage.getItem('userId')

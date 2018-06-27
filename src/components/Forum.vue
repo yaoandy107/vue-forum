@@ -68,11 +68,12 @@ export default {
     onLoggedIn: function (userId) {
       const vm = this
       vm.isLoggedIn = true
-      vm.globalObject.userId = userId
+      vm.saveUserId(userId)
     },
     onLoggedOut: function () {
       const vm = this
       vm.isLoggedIn = false
+      vm.clearUserId()
     },
     onLoginLogoutClicked: function () {
       const vm = this
