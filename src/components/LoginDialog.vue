@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show.bool" max-width="400">
+  <v-dialog v-model="show.bool" max-width="400" style="position: relative;">
     <v-card>
       <!-- 標題 -->
       <v-card-title class="text-center headline blue white--text">登入</v-card-title>
@@ -51,7 +51,7 @@
       </v-card-actions>
     </v-card>
     <!-- 進度圈 -->
-    <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+    <v-progress-circular style="position: absolute; top: 50%; right: 50%;" v-show="showProgress" indeterminate color="green"></v-progress-circular>
   </v-dialog>
 </template>
 
@@ -74,11 +74,15 @@ export default {
     },
     inputEmail (email) {
       const vm = this
-      vm.checkEmail(email)
+      if (vm.show.bool) {
+        vm.checkEmail(email)
+      }
     },
     inputPassword (password) {
       const vm = this
-      vm.checkPassword(password)
+      if (vm.show.bool) {
+        vm.checkPassword(password)
+      }
     }
   },
   data: () => {
