@@ -95,9 +95,13 @@ class FirebaseHelper {
     }
   }
   sendMessage (userId, friendId, message) {
-    console.log(message)
+    // console.log(message)
     const chatRef = this.db.collection('chats').doc(userId).collection('chats').doc(friendId)
+    const chatRef2 = this.db.collection('chats').doc(friendId).collection('chats').doc(userId)
     chatRef.set({
+      messages: message
+    }, {merge: true})
+    chatRef2.set({
       messages: message
     }, {merge: true})
   }

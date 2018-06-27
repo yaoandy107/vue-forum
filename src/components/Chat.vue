@@ -31,9 +31,21 @@
               </template>
           </template>
       </v-layout>
-      <div class="chat-input">
-        <textarea id="js-message" class="chat-input__textarea" :class="{ disable: !userName }" @keydown.enter="sendMessage($event)"></textarea>
-      </div>
+      <v-container fluid>
+        <v-layout row>
+          <v-flex xs12>
+            <v-text-field
+              id="js-message" 
+              v-model="message"
+              label="輸入訊息"
+              rows="4"
+              textarea
+              hide-details
+              @keyup="sendMessage($event)"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-container>
 </template>
 
@@ -52,6 +64,10 @@ export default {
   created: function () {
     this.setChat()
   },
+  updated () {
+    const chatBody = document.querySelector('.chat-body')
+    chatBody.scrollTop = chatBody.scrollHeight
+  },
   methods: {
     setChat () {
       const vm = this
@@ -63,8 +79,9 @@ export default {
         })
     },
     sendMessage (event) {
+      console.log(event)
       const vm = this
-      const message = document.querySelector('#js-message')
+      const message = vm.message
       const userId = vm.globalObject.userId
       const friendId = vm.friendId
       // 如果是按住shift則不傳送訊息(多行輸入)
@@ -72,7 +89,7 @@ export default {
         return false
       }
       // 如果輸入是空則不傳送訊息
-      if (message.value.length <= 1 && message.value.trim() === '') {
+      if (message.length <= 1 && message.trim() === '') {
         // 避免enter產生的空白換行
         event.preventDefault()
         return false
@@ -81,16 +98,19 @@ export default {
         userName: vm.userName,
         userId: vm.globalObject.userId,
         type: 'text',
-        message: message.value
+        message: message
       })
+      // console.log(vm.messages)
       FirebaseHelper.sendMessage(userId, friendId, vm.messages)
       // 清空輸入欄位並避免enter產生的空白換行
-      message.value = ''
+      vm.message = ''
       event.preventDefault()
     }
   },
   data: () => ({
-    messages: []
+    messages: [],
+    message: '',
+    userName: '姚韋辰'
   }),
   props: {
     friendId: String
@@ -103,7 +123,7 @@ export default {
   display: block;
   padding: 10px 0px;
   background-color: #fff;
-  height: 80% !important;
+  height: 60vh !important;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -172,13 +192,7 @@ export default {
   border: 1px gray solid;
   padding: 10px 10px 5px 10px;
 }
-.chat-input__textarea {
-  width: 100%;
-  height: 100%;
-  border: none;
-  resize: none;
-  outline: none;
-}
+
 @media screen and (max-width: 425px) {
   .message__content {
     max-width: 60%;
