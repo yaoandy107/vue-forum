@@ -24,9 +24,19 @@
 <script>
 import FirebaseHelper from '@/helpers/FirebaseHelper'
 export default {
+  beforeRouteEnter: function (to, from, next) {
+    next((vm) => {
+      vm.updatePostList()
+    })
+  },
   watch: {
     category: function () {
-      console.log('waa')
+      const vm = this
+      vm.updatePostList()
+    }
+  },
+  methods: {
+    updatePostList: function () {
       const vm = this
       vm.showProgress = true
       FirebaseHelper.getPostList(vm.category)
@@ -35,9 +45,7 @@ export default {
         vm.postList.push(...postList)
         vm.showProgress = false
       })
-    }
-  },
-  methods: {
+    },
     test: function (postId) {
       FirebaseHelper.addPostExplore(postId)
     }

@@ -22,7 +22,8 @@ Vue.use(Vuetify)
 Vue.config.productionTip = false
 
 const globalObject = {
-  userId: ''
+  userId: '',
+  showDrawer: null
 }
 const global = {
   methods: {

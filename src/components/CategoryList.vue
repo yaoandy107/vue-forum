@@ -12,7 +12,7 @@
       </v-flex>
     </v-layout>
     <template v-for="category in categories">
-      <v-list-tile active-class="default-class active-class" ripple :key="category.text" @click="() => test(category.url)">
+      <v-list-tile :value="category.isActive" active-class="default-class active-class" :to="{ name: 'category', params: {category: category.url} }" ripple :key="category.text">
         <v-list-tile-content>
           <v-list-tile-title>
             {{ category.text }}
@@ -27,11 +27,15 @@
 
 <script>
 import FirebaseHelper from '@/helpers/FirebaseHelper'
+const data = { // 宣告在這裡是為了讓所有此component實例共享此data物件
+  heading: '文章列表',
+  categories: [],
+  showProgress: true
+}
 export default {
-  beforeRouteEnter: function (to, from, next) {
-    next((vm) => {
-      vm.updateList()
-    })
+  created: function () {
+    const vm = this
+    vm.updateList()
   },
   methods: {
     updateList: function () {
@@ -39,26 +43,16 @@ export default {
       vm.showProgress = true
       FirebaseHelper.getCategoryList()
       .then((list) => {
+        vm.categories.length = 0
         vm.categories.push(...list)
         vm.showProgress = false
       })
-    },
-    test: function (category) {
-      const vm = this
-      vm.$router.push({ name: 'category', params: { category: category } })
-      console.log('ass')
-      // FirebaseHelper.addPost('authorC', 'c', 'titleC', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorC++', 'cpp', 'titleC++', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorJava', 'java', 'titleJava', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorJavaScript', 'javascript', 'titleJavaScript', 'ContentContentContentContentContentContentContent')
-      // FirebaseHelper.addPost('authorPython', 'python', 'titlePython', 'ContentContentContentContentContentContentContent')
     }
   },
-  data: () => ({
-    heading: '文章列表',
-    categories: [],
-    showProgress: true
-  })
+  data: () => data,
+  props: {
+    category: String
+  }
 }
 </script>
 

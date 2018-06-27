@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Forum from '@/components/Forum'
-import MainPage from '@/components/MainPage'
-import CategoryList from '@/components/CategoryList'
+import ForumPage from '@/components/ForumPage'
 import PostList from '@/components/PostList'
 import ChatPage from '@/components/ChatPage'
 import ChatDrawer from '@/components/ChatDrawer'
@@ -16,34 +14,21 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/category',
-      component: Forum,
+      redirect: '/forum'
+    },
+    {
+      path: '/forum',
+      name: 'forum',
+      component: ForumPage,
       children: [
         {
-          path: 'category',
-          redirect: '/category/all',
-          name: 'home',
-          components: {
-            default: MainPage,
-            drawer: CategoryList
-          },
-          children: [
-            {
-              path: ':category',
-              name: 'category',
-              component: PostList,
-              props: true
-            },
-            {
-              path: ':category/:postId',
-              name: 'post',
-              component: Post,
-              props: true
-            }
-          ],
+          path: ':category',
+          name: 'category',
+          component: PostList,
           props: true
         },
         {
+<<<<<<< HEAD
           path: '/messaging',
           name: 'messaging',
           components: {
@@ -58,9 +43,15 @@ const router = new Router({
               props: true
             }
           ],
+=======
+          path: ':category/:postId',
+          name: 'post',
+          component: Post,
+>>>>>>> 97744d6360fbf2ad92baaf3502ea538418677cfa
           props: true
         }
-      ]
+      ],
+      props: true
     }
   ]
 })
