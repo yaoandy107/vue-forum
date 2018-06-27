@@ -7,6 +7,7 @@ import PostList from '@/components/PostList'
 import ChatPage from '@/components/ChatPage'
 import ChatDrawer from '@/components/ChatDrawer'
 import Post from '@/components/Post'
+import Chat from '@/components/Chat'
 
 Vue.use(Router)
 
