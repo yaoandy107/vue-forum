@@ -48,7 +48,16 @@ const router = new Router({
           components: {
             default: ChatPage,
             drawer: ChatDrawer
-          }
+          },
+          children: [
+            {
+              path: ':friendId',
+              name: 'chat',
+              component: Chat,
+              props: true
+            }
+          ],
+          props: true
         }
       ]
     }
