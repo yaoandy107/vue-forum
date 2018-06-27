@@ -22,6 +22,7 @@
         prepend-icon="search"
         label="Search"
         class="hidden-sm-and-down">
+        
       </v-text-field>
       <!-- 自動間隔 -->
       <v-spacer></v-spacer>
