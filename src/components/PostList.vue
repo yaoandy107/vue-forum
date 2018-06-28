@@ -48,7 +48,7 @@
                 <!-- <v-list-tile-content> -->
                 <v-layout d-flex row>
                   <v-flex offset-xs1 xs4><v-list-tile-title class="">{{ postInfo.title }}</v-list-tile-title></v-flex>
-                  <v-flex offset-xs4 xs1><v-list-tile-sub-title class="text-lg-right">{{ postInfo.authorName }}</v-list-tile-sub-title></v-flex>
+                  <v-flex offset-xs3 xs3><v-list-tile-sub-title class="text-lg-right">{{ postInfo.authorName }}</v-list-tile-sub-title></v-flex>
                 </v-layout>
                 <!-- </v-list-tile-content> -->
               </v-flex>
