@@ -13,7 +13,7 @@
         <!-- 側邊欄 icon -->
         <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="globalObject.showDrawer = !globalObject.showDrawer"></v-toolbar-side-icon>
         <!-- 標題 -->
-        <span>{{ title }}</span>
+        <a href="/" class="title">{{ title }}</a>
       </v-toolbar-title>
       <!-- 搜尋欄 -->
       <v-text-field
@@ -100,3 +100,9 @@ export default {
 
 <style src="../static/css/style.css"></style>
 <style src="../static/css/atom-one-dark.css"></style>
+<style scoped>
+.title {
+  color: #fff;
+  text-decoration: none;
+}
+</style>
