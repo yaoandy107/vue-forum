@@ -1,6 +1,6 @@
 <template>
     <v-container d-block fluid fill-height white>
-      <v-layout class="chat-body">
+      <v-layout class="chat-body pb-0">
           <!-- Main -->
           <template v-for="item in messages">
               <!-- other people -->
@@ -36,11 +36,12 @@
               </template>
           </template>
       </v-layout>
-      <v-container fluid>
+      <v-container fluid pa-0>
         <v-layout row>
           <v-flex xs12>
             <v-text-field
               id="js-message" 
+              class="chat-input"
               v-model="message"
               label="輸入訊息"
               rows="4"
@@ -193,9 +194,7 @@ export default {
   margin: 0px -16px 5px 0px;
 }
 .chat-input {
-  height: 20%;
-  border: 1px gray solid;
-  padding: 10px 10px 5px 10px;
+  height: 25vh;
 }
 
 @media screen and (max-width: 425px) {
