@@ -65,10 +65,10 @@ export default {
       if (!vm.globalObject.userData.userId) {
         vm.messages = []
       }
+    },
+    friendId () {
+      this.setChat()
     }
-  },
-  created: function () {
-    this.setChat()
   },
   updated () {
     const chatBody = document.querySelector('.chat-body')
