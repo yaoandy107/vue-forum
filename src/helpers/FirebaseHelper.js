@@ -207,6 +207,33 @@ class FirebaseHelper {
       isMarkdown: postData.isMarkdown
     })
   }
+  increasePostExplore (postId) {
+    const postsRef = this.db.collection('posts')
+    return this.getPostData(postId)
+    .then((data) => {
+      return postsRef.doc(postId).set({
+        numOfExplore: data.numOfExplore + 1
+      }, { merge: true })
+    })
+  }
+  increasePostLike (postId) {
+    const postsRef = this.db.collection('posts')
+    return this.getPostData(postId)
+    .then((data) => {
+      return postsRef.doc(postId).set({
+        numOfLike: data.numOfLike + 1
+      }, { merge: true })
+    })
+  }
+  increasePostReply (postId) {
+    const postsRef = this.db.collection('posts')
+    return this.getPostData(postId)
+    .then((data) => {
+      return postsRef.doc(postId).set({
+        numOfReply: data.numOfReply + 1
+      }, { merge: true })
+    })
+  }
 }
 
 const instance = new FirebaseHelper()

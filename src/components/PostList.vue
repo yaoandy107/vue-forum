@@ -1,5 +1,9 @@
 <template>
-  <v-container fluid>
+  <v-container fluid style="height: 100%; position: relative;">
+    <!-- 進度圈 -->
+    <v-flex xs12 style="position: absolute; top: 50%; left: 50%;">
+      <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+    </v-flex >
     <v-layout row wrap>
       <!-- 列表標題 -->
       <v-flex xs12 d-flex align-baseline>
@@ -36,7 +40,10 @@
         <v-list three-line>
           <template v-for="(postInfo, index) in postList">
             <v-divider v-if="index !== 0" :key="index"></v-divider>
-            <v-list-tile avatar :key="postInfo.postId" :to="{ name: 'post', params: { postId: postInfo.postId } }">
+            <v-list-tile avatar :key="postInfo.postId" 
+              :to="{ name: 'post', params: { postId: postInfo.postId } }"
+              @click="() => increasePostExplore(postInfo.postId)"
+            >
               <v-flex xs10>
                 <!-- <v-list-tile-content> -->
                 <v-layout d-flex row>
@@ -140,6 +147,9 @@ export default {
         }
         vm.showProgress = false
       })
+    },
+    increasePostExplore: function (postId) {
+      FirebaseHelper.increasePostExplore(postId)
     }
   },
   data: () => ({
