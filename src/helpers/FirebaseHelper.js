@@ -29,8 +29,9 @@ class FirebaseHelper {
     const accountsRef = this.db.collection('accounts')
     return accountsRef.where('email', '==', email).where('password', '==', password).limit(1).get()
     .then((querySnapshot) => {
-      let userData = {}
+      let userData
       querySnapshot.forEach((doc) => {
+        userData = {}
         userData.userId = doc.id
         userData.userName = doc.data().userName
         accountsRef.doc(userData.userId).set({
@@ -181,7 +182,8 @@ class FirebaseHelper {
     .then((querySnapshot) => {
       let postList = []
       querySnapshot.forEach((doc) => {
-        postList.push({ postId: doc.id, title: doc.data().title, author: doc.data().author, like: doc.data().numOfLike, reply: doc.data().numOfReply, explore: doc.data().numOfExplore })
+        let data = doc.data()
+        postList.push({ postId: doc.id, title: data.title, authorName: data.authorName, createdTime: data.createdTime, like: data.numOfLike, reply: data.numOfReply, explore: data.numOfExplore })
       })
       return postList
     })

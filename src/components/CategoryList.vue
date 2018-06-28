@@ -18,7 +18,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <template v-for="category in categories">
+        <template v-for="category in globalObject.categories">
           <v-list-tile active-class="default-class active-class" :to="{ name: 'category', params: {category: category.url} }" ripple :key="category.text">
             <v-list-tile-content>
               <v-list-tile-title>
@@ -38,7 +38,6 @@
 import FirebaseHelper from '@/helpers/FirebaseHelper'
 const data = { // 宣告在這裡是為了讓所有此component實例共享此data物件
   heading: '文章列表',
-  categories: [],
   showProgress: true
 }
 export default {
@@ -52,8 +51,8 @@ export default {
       vm.showProgress = true
       FirebaseHelper.getCategoryList()
       .then((list) => {
-        vm.categories.length = 0
-        vm.categories.push(...list)
+        vm.globalObject.categories.length = 0
+        vm.globalObject.categories.push(...list)
         vm.showProgress = false
       })
     }
