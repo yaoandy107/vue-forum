@@ -1,8 +1,10 @@
 <template>
   <v-content>
     <v-navigation-drawer
+      v-model="globalObject.showDrawer"
       clipped
       fixed
+      hide-overlay
       mobile-break-point="600"
       app>
       <chat-list></chat-list>
