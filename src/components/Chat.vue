@@ -1,5 +1,5 @@
 <template>
-    <v-container d-block fluid fill-height white>
+    <v-container d-block fluid fill-height white py-0>
       <v-layout class="chat-body pb-0">
           <!-- Main -->
           <template v-for="item in messages">
@@ -129,7 +129,7 @@ export default {
   display: block;
   padding: 10px 0px;
   background-color: #fff;
-  height: 60vh !important;
+  height: 65vh !important;
   overflow-y: auto;
   overflow-x: hidden;
 }
