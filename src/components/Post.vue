@@ -7,7 +7,7 @@
           <!-- 文章內容 -->
           <v-flex xs12 wrap>
             <template v-for="(contentPart) in postData.content">
-              <p :key="contentPart.text">{{ contentPart.text }}</p>
+              <p><pre :key="contentPart.text">{{ contentPart.text }}</pre></p>
             </template>
           </v-flex>
         </v-layout>
@@ -61,3 +61,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+pre {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;
+}
+</style>
+
