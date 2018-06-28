@@ -120,7 +120,7 @@
     <v-layout d-flex align-center column wrap class="pa-3">
       <!-- 送出按鈕 -->
       <v-flex>
-        <v-btn dark color="blue">送出</v-btn>
+        <v-btn dark color="blue" @click="() => sendNewPost()">送出</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
