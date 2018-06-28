@@ -1,7 +1,7 @@
 <template>
   <v-list>
     <template v-for="friend in friendList">
-      <v-list-tile :key="friend.text" @click="() => route(friend.userId)" avatar>
+      <v-list-tile :key="friend.text" @click="() => route(friend)" avatar>
         <!-- 有頭貼 -->
         <v-list-tile-avatar v-show="friend.avatarUrl">
           <img :src="friend.avatarUrl" alt="avatar">
@@ -62,9 +62,9 @@ export default {
           console.log('取得好友列表錯誤')
         })
     },
-    route (userId) {
+    route (friend) {
       const vm = this
-      vm.$router.push({name: 'chat', params: { friendId: userId }})
+      vm.$router.push({name: 'chat', params: { friendId: friend.userId, avatarUrl: friend.avatarUrl }})
     },
     onAddFriendClicked () {
       const vm = this

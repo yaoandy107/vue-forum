@@ -6,7 +6,12 @@
               <!-- other people -->
               <template v-if="item.userId != globalObject.userData.userId">
                   <div class="message">
-                      <img src="https://vuetifyjs.com/static/doc-images/john.jpg" class="message__user" draggable="false">
+                      <img v-show="avatarUrl" :src="avatarUrl" class="message__user" draggable="false">
+                      <div v-show="!avatarUrl" class="message__user">
+                        <v-avatar color="teal" size="40">
+                          <span class="white--text headline">{{(item.userName || '')[0]}}</span>
+                        </v-avatar>
+                      </div>
                       <div class="message__content">
                           <div class="message__name">{{item.userName}}</div>
                           <div v-if="item.type == 'text'" class="message__message">
@@ -14,13 +19,13 @@
                           </div>
                           <div v-if="item.type == 'image'" class="message__image"><img :src="item.message"></div>
                       </div>
-                      <div class="message__time">{{item.timeStamp}}</div>
+                      <div class="message__time">{{new Date(item.timeStamp.nanoseconds).toLocaleString()}}</div>
                   </div>
               </template>
               <!-- 區塊：self -->
               <template v-if="item.userId == globalObject.userData.userId">
                   <div class="message message--self">
-                      <div class="message__time">{{item.timeStamp}}</div>
+                      <div class="message__time">{{new Date(item.timeStamp.nanoseconds).toLocaleString()}}</div>
                       <div class="message__content">
                           <div v-if="item.type == 'text'" class="message__message">
                             <div class="message__text">{{item.message}}</div>
@@ -109,11 +114,11 @@ export default {
   },
   data: () => ({
     messages: [],
-    message: '',
-    userName: '姚韋辰'
+    message: ''
   }),
   props: {
-    friendId: String
+    friendId: String,
+    avatarUrl: String
   }
 }
 </script>
