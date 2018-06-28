@@ -55,9 +55,9 @@
               <v-flex xs2>
                 <v-layout d-flex column align-content-end>
                   <v-layout d-flex column align-start>
-                    <v-flex><v-list-tile-sub-title><v-icon>thumb_up</v-icon> : {{ postInfo.like }}</v-list-tile-sub-title></v-flex>
-                    <v-flex><v-list-tile-sub-title><v-icon>remove_red_eye</v-icon> : {{ postInfo.explore }}</v-list-tile-sub-title></v-flex>
-                    <v-flex><v-list-tile-sub-title><v-icon>textsms</v-icon> : {{ postInfo.reply }}</v-list-tile-sub-title></v-flex>
+                    <v-flex><v-list-tile-sub-title><v-icon size="20" color="grey">thumb_up</v-icon> : {{ postInfo.like }}</v-list-tile-sub-title></v-flex>
+                    <v-flex><v-list-tile-sub-title><v-icon size="20" color="grey">remove_red_eye</v-icon> : {{ postInfo.explore }}</v-list-tile-sub-title></v-flex>
+                    <v-flex><v-list-tile-sub-title><v-icon size="20" color="grey">textsms</v-icon> : {{ postInfo.reply }}</v-list-tile-sub-title></v-flex>
                   </v-layout>
                 </v-layout>
               </v-flex>
