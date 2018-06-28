@@ -11,18 +11,50 @@
         </v-subheader>
       </v-flex>
     </v-layout>
-    <template v-for="item in items">
-      <v-list-tile :key="item.text" @click="">
-        <v-list-tile-action>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>
-            {{ item.text }}
-          </v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </template>
+    <!-- 好友 -->
+    <v-list-tile @click="toChatPage">
+      <v-list-tile-action>
+        <v-icon>contacts</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>
+          好友
+        </v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <!-- 設定 -->
+    <v-list-tile @click="">
+      <v-list-tile-action>
+        <v-icon>settings</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>
+          設定
+        </v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <!-- 回饋 -->
+    <v-list-tile @click="">
+      <v-list-tile-action>
+        <v-icon>chat_bubble</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>
+          回饋
+        </v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <!-- 幫助 -->
+    <v-list-tile @click="">
+      <v-list-tile-action>
+        <v-icon>help</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>
+          幫助
+        </v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
   </v-list>
 </template>
 
@@ -37,6 +69,11 @@ const data = {
   ]
 }
 export default {
-  data: () => data
+  data: () => data,
+  methods: {
+    toChatPage () {
+      this.$router.push('/messaging')
+    }
+  }
 }
 </script>

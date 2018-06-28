@@ -55,7 +55,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <!-- <v-btn color="red darken-1" flat v-on:click="reset">清空</v-btn> -->
-        <v-btn :disabled="!hasPassedRecaptcha || (!emailCheck.hasChecked || emailCheck.isError) || (!usernameCheck.hasChecked || usernameCheck.isError) || (!passwordCheck.hasChecked || passwordCheck.isError)" color="green darken-1" flat v-on:click="register">註冊</v-btn>
+        <v-btn :disabled="(!emailCheck.hasChecked || emailCheck.isError) || (!usernameCheck.hasChecked || usernameCheck.isError) || (!passwordCheck.hasChecked || passwordCheck.isError)" color="green darken-1" flat v-on:click="register">註冊</v-btn>
       </v-card-actions>
     </v-card>
     <!-- 進度圈 -->
