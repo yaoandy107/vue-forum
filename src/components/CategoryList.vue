@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list subheader>
     <v-layout
       :key="heading"
       row
