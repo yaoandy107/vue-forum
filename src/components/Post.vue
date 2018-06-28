@@ -17,7 +17,9 @@
         <v-layout>
           <!-- 文章留言 -->
           <v-flex xs12>
-            留言
+            <v-container>
+              留言
+            </v-container>
             <!-- <template v-for="vm.postData.num_of_reply">
 
             </template> -->
