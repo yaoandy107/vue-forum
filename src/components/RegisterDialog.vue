@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show.bool" v-on:click.self="reset" max-width="400">
+  <v-dialog v-model="show.bool" v-on:click.self="reset" max-width="400" style="position: relative">
     <v-card>
       <!-- 標題 -->
       <v-card-title class="text-center headline blue white--text">註冊</v-card-title>
@@ -54,12 +54,12 @@
       <!-- 註冊按鈕 -->
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red darken-1" flat v-on:click="reset">清空</v-btn>
+        <!-- <v-btn color="red darken-1" flat v-on:click="reset">清空</v-btn> -->
         <v-btn :disabled="!hasPassedRecaptcha || (!emailCheck.hasChecked || emailCheck.isError) || (!usernameCheck.hasChecked || usernameCheck.isError) || (!passwordCheck.hasChecked || passwordCheck.isError)" color="green darken-1" flat v-on:click="register">註冊</v-btn>
       </v-card-actions>
     </v-card>
     <!-- 進度圈 -->
-    <v-progress-circular v-show="showProgress" indeterminate color="green"></v-progress-circular>
+    <v-progress-circular style="position: absolute; top: 50%; right: 50%;" v-show="showProgress" indeterminate color="green"></v-progress-circular>
   </v-dialog>
 </template>
 
@@ -82,15 +82,21 @@ export default {
     },
     inputEmail (email) {
       const vm = this
-      vm.checkEmail(email)
+      if (vm.show.bool) {
+        vm.checkEmail(email)
+      }
     },
     inputUsername (userName) {
       const vm = this
-      vm.checkUsername(userName)
+      if (vm.show.bool) {
+        vm.checkUsername(userName)
+      }
     },
     inputPassword (password) {
       const vm = this
-      vm.checkPassword(password)
+      if (vm.show.bool) {
+        vm.checkPassword(password)
+      }
     }
   },
   data: () => {
@@ -115,7 +121,7 @@ export default {
         isError: false,
         hint: ''
       },
-      hasPassedRecaptcha: false
+      hasPassedRecaptcha: true// false
     }
   },
   methods: {

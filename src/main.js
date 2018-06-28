@@ -27,6 +27,7 @@ const globalObject = {
     userId: '',
     userName: ''
   },
+  categories: [],
   showDrawer: null
 }
 const global = {
@@ -45,6 +46,18 @@ const global = {
     initUserData () {
       globalObject.userData.userId = localStorage.getItem('userId')
       globalObject.userData.userName = localStorage.getItem('userName')
+    },
+    getCategoryName (category) {
+      const vm = this
+      let name
+      let stop = false
+      vm.globalObject.categories.forEach(categoryObject => {
+        if (categoryObject.url === category && !stop) {
+          name = categoryObject.text
+          stop = true
+        }
+      })
+      return name
     }
   },
   data: () => ({

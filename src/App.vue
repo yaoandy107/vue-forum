@@ -56,15 +56,19 @@ import RegisterDialog from '@/components/RegisterDialog'
 import LoginDialog from '@/components/LoginDialog'
 import LogoutDialog from '@/components/LogoutDialog'
 export default {
+  computed: {
+    isLoggedIn: function () {
+      const vm = this
+      return (vm.globalObject.userData.userId || false) === vm.globalObject.userData.userId
+    }
+  },
   methods: {
     onLoggedIn: function (userData) {
       const vm = this
-      vm.isLoggedIn = true
       vm.saveUserData(userData)
     },
     onLoggedOut: function () {
       const vm = this
-      vm.isLoggedIn = false
       vm.clearUserData()
     },
     onLoginLogoutClicked: function () {
@@ -82,7 +86,6 @@ export default {
   },
   data: () => ({
     title: 'DevZone',
-    isLoggedIn: false,
     showLoginDialog: { bool: false },
     showLogoutDialog: { bool: false },
     showRegisterDialog: { bool: false }

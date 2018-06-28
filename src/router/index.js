@@ -14,7 +14,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/forum'
+      redirect: '/forum/all'
     },
     {
       path: '/forum',
