@@ -145,7 +145,7 @@ class FirebaseHelper {
   }
   getTimeStamp () {
     const now = new Date()
-    const month = now.getMonth()
+    const month = now.getMonth() + 1
     const date = now.getDate()
     const hours = now.getHours()
     const minutes = now.getMinutes()
