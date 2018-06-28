@@ -5,9 +5,9 @@
       <v-card-text>
         <v-layout row wrap fill-height>
           <!-- 文章內容 -->
-          <v-flex xs12>
+          <v-flex xs12 wrap>
             <template v-for="(contentPart) in postData.content">
-              <pre :key="contentPart.text">{{ contentPart.text }}</pre>
+              <p :key="contentPart.text">{{ contentPart.text }}</p>
             </template>
           </v-flex>
         </v-layout>

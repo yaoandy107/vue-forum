@@ -47,14 +47,15 @@
         <v-icon>code</v-icon>
       </v-btn>
     </v-speed-dial>
-      <v-dialog v-model="dialog" width="600px">
+      <v-dialog v-model="showMdPreview" max-width="960">
         <v-card>
           <v-card-title>
-            <span class="headline">Use Google's location service?</span>
+            <span class="headline">Markdown 預覽</span>
           </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
             <v-flex
-              v-if=" postData.isMarkdown"
+              v-if="postData.isMarkdown"
               xs12
               class="d-inline-block pa-2"
               v-html="compiledMarkdown"
@@ -73,6 +74,7 @@
             <span>Markdown</span>
           </v-btn>
         </v-btn-toggle>
+        <v-btn v-if="postData.isMarkdown" @click="showMdPreview = true">預覽</v-btn>
       </v-flex>
     </v-layout>
     <v-layout row wrap class="pa-3">
@@ -97,7 +99,7 @@
         ></v-text-field>
       </v-flex>
       <!-- markdown輸入 -->
-      <v-flex xs12 v-if=" postData.isMarkdown">
+      <v-flex xs12 v-if="postData.isMarkdown">
         <v-text-field
           style="background-color: #f2f2f2;"
           placeholder="Markdown"
@@ -118,7 +120,7 @@
     <v-layout d-flex align-center column wrap class="pa-3">
       <!-- 送出按鈕 -->
       <v-flex>
-        <v-btn dark color="blue">送出</v-btn>
+        <v-btn dark color="blue" @click="() => sendNewPost()">送出</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -179,14 +181,14 @@ export default {
       authorName: '',
       category: '',
       isMarkdown: false,
-      content: [],
-      dialog: false
+      content: []
     },
     currentContentPart: {
       type: 'plain',
       text: ''
     },
     fab: undefined,
+    showMdPreview: false,
     showProgress: false
   }),
   props: {
