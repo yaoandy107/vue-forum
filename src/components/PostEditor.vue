@@ -48,21 +48,22 @@
           <v-icon>code</v-icon>
         </v-btn>
       </v-speed-dial>
-        <v-dialog v-model="dialog" width="600px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">Use Google's location service?</span>
-            </v-card-title>
-            <v-card-text>
-              <v-flex
-                v-if=" postData.isMarkdown"
-                xs12
-                class="d-inline-block pa-2"
-                v-html="compiledMarkdown"
-              ></v-flex>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+      <v-dialog v-model="showMdPreview" max-width="960">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Markdown 預覽</span>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-flex
+              v-if="postData.isMarkdown"
+              xs12
+              class="d-inline-block pa-2"
+              v-html="compiledMarkdown"
+            ></v-flex>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
       <v-layout d-flex align-center column wrap class="pa-3">
         <!-- 模式選擇 -->
         <v-flex>
@@ -74,6 +75,7 @@
               <span>Markdown</span>
             </v-btn>
           </v-btn-toggle>
+          <v-btn v-if="postData.isMarkdown" @click="showMdPreview = true">預覽</v-btn>
         </v-flex>
       </v-layout>
       <v-layout row wrap class="pa-3">
@@ -108,15 +110,21 @@
         </v-flex>
         <!-- markdown輸入 -->
         <v-flex xs12 v-if=" postData.isMarkdown">
-          <v-text-field
-            style="background-color: #f2f2f2;"
-            placeholder="Markdown"
-            full-width
-            multi-line
-            rows="13"
-            v-model="currentContentPart.text"
-            @click="currentContentPart.type = 'plain'"
-          ></v-text-field>
+          <v-container pt-0>
+            <v-layout row>
+              <v-flex xs12>
+                <v-text-field
+                  name="input-1"
+                  label="Markdown"
+                  textarea
+                  multi-line
+                  rows="13"
+                  v-model="currentContentPart.text"
+                  @click="currentContentPart.type = 'plain'"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
         </v-flex>
         <!-- <v-flex
           v-if=" postData.isMarkdown"
@@ -190,14 +198,14 @@ export default {
       authorName: '',
       category: '',
       isMarkdown: false,
-      content: [],
-      dialog: false
+      content: []
     },
     currentContentPart: {
       type: 'plain',
       text: ''
     },
     fab: undefined,
+    showMdPreview: false,
     showProgress: false
   }),
   props: {
