@@ -1,4 +1,4 @@
-# DevZone
+# [DEPRECATED] DevZone
 > A final project of NTUT's course
 
 > A Vue.js project
